@@ -30,7 +30,11 @@ class ClassFormatter(ABC):
 
         is_constructor = method_descriptor.method_name == 'constructor' # constructor,voidは戻り値がない
         method_result = '' if is_constructor else method_descriptor.result
-        body = indent(method_descriptor.body)
+        body_lines = method_descriptor.body.splitlines()
+        lines_with_semicolon = [
+            line if line.strip() in ['{','}'] or not line.strip() else line + ';' for line in body_lines
+        ]
+        body = indent('\n'.join(lines_with_semicolon))
 
         if virtual!='':
             return f'{virtual} {method_result} {method_descriptor.method_name}({arguments}) {{\n{body}}}'
@@ -40,9 +44,10 @@ class ClassFormatter(ABC):
 	# クラスのヘッダーを生成する
     def generate_class_header(self):
         base_class = self.provider.get_base_class()
-        base_class = f' : {base_class}' if base_class else ''
+        base_class = base_class.replace('(', '').replace(')', '')
+        base_class = f' : public {base_class}' if base_class else ''
         header = f'class {self.provider.typename}{base_class} {{\n'
-        header += 'public:\n'
+        header += indent('public:\n')
         return f'{header}'
 
     def generate_class(self):
@@ -51,14 +56,14 @@ class ClassFormatter(ABC):
         fields = self.provider.get_fields()
         fields_output = ''
         for field in fields:
-            fields_output += indent(field + ';')
+            fields_output += indent(indent(field + ';'))
 
         if fields_output:
             output += fields_output + '\n'
 
         methods = self.generate_methods()
         output += '\n'.join(map(indent, methods))
-        output += '\n};'
+        output += '};\n'
         return output
 
     def generate_output(self):
@@ -82,15 +87,16 @@ class TypeFormatter(ClassFormatter):
 
         method_descriptor.method_name = self.provider.typename  # C++のコンストラクタはクラス名と一致する
         return self.generate_method(method_descriptor)
+    
+    ## NEMにしか使用しないためコメントアウト
+    # def generate_comparer(self):
+    #     method_descriptor = self.provider.get_comparer_descriptor()
+    #     if not method_descriptor:
+    #         return None
 
-    def generate_comparer(self):
-        method_descriptor = self.provider.get_comparer_descriptor()
-        if not method_descriptor:
-            return None
-
-        method_descriptor.method_name = 'comparer'
-        # method_descriptor.arguments = ['const MyClass& other']  # 比較対象のオブジェクトを引数に追加
-        return self.generate_method(method_descriptor)
+    #     method_descriptor.method_name = 'comparer'
+    #     # method_descriptor.arguments = ['const MyClass& other']  # 比較対象のオブジェクトを引数に追加
+    #     return self.generate_method(method_descriptor)
 
     def generate_sort(self):
         method_descriptor = self.provider.get_sort_descriptor()
@@ -99,19 +105,22 @@ class TypeFormatter(ClassFormatter):
 
         method_descriptor.method_name = 'sort'
         method_descriptor.arguments = []
+        method_descriptor.result = 'void'
         return self.generate_method(method_descriptor)
 
     def generate_deserializer(self):
         method_descriptor = self.provider.get_deserialize_descriptor()
         method_descriptor.method_name = 'deserialize'
+        method_descriptor.arguments = ['Uint8List payload']
         method_descriptor.result = self.provider.typename
-        method_descriptor.arguments = ['const std::vector<uint8_t>& buffer']
+        method_descriptor.annotions = ['@override']
         return self.generate_method(method_descriptor)
 
     def generate_serializer(self):
         method_descriptor = self.provider.get_serialize_descriptor()
         method_descriptor.method_name = 'serialize'
-        method_descriptor.result = 'std::vector<uint8_t>'
+        method_descriptor.result = 'Uint8List'
+        method_descriptor.annotions = ['@override']
         return self.generate_method(method_descriptor)
 
     def generate_size(self):
@@ -119,8 +128,10 @@ class TypeFormatter(ClassFormatter):
         if not method_descriptor:
             return None
 
-        method_descriptor.method_name = 'size'
-        method_descriptor.result = 'size_t'
+        method_descriptor.method_name = 'get_size'
+        method_descriptor.arguments = []
+        method_descriptor.result = 'int'
+        method_descriptor.annotion = ['@override']
         return self.generate_method(method_descriptor)
 
     def generate_getters(self):

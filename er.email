@@ -1,0 +1,403 @@
+[33mcommit 52f5546ff0ce4b3aeb5f1f05ffecd006b4d512ac[m[33m ([m[1;36mHEAD -> [m[1;32mmake_models[m[33m, [m[1;31morigin/make_models[m[33m)[m
+Author: u-ktdi <pyoe51g4@s.okayama-u.ac.jp>
+Date:   Thu Oct 17 13:46:24 2024 +0900
+
+    conduct .sh and repaire typeformat.py
+
+[33mcommit 32b91019799e0ac322d9604ad29c1797868e40f3[m[33m ([m[1;31morigin/dev[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;31morigin/C++SDK[m[33m, [m[1;32mdev[m[33m, [m[1;32mC++SDK[m[33m)[m
+Author: Wayonb <wayon@symbol.dev>
+Date:   Mon Sep 30 21:52:26 2024 -0400
+
+    [jenkins] fix: mongo-cxx-driver libraries name change on Windows
+    
+    problem: starting with mongocxx r3.10.0, MSVC toolchain on Windows generates different library names
+    solution: disable this feature by setting ENABLE_ABI_TAG_IN_LIBRARY_FILENAMES=OFF
+
+[33mcommit 5e1c41b4f81c532c33f9c94edf10f836b9eb52c3[m
+Author: Wayonb <wayon@symbol.dev>
+Date:   Mon Sep 30 18:31:09 2024 -0400
+
+    [jenkins] fix: rocksdb build fails with gcc 12.3
+    
+    problem: rocksdb fails to build with gcc 12.3 due to a array-bounds error
+    solution: disable the warning for gcc 12
+
+[33mcommit fe28b92c8c8cb860b0fe3fd074bd38707c83ff0d[m
+Author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+Date:   Mon Sep 30 18:07:07 2024 -0400
+
+    [dependency]: Combine dependabot PRs
+    
+    * [dependency]: Bump pylint
+    
+    Bumps the linter-python-dependencies group in /linters/python with 1 update: [pylint](https://github.com/pylint-dev/pylint).
+    
+    
+    Updates `pylint` from 3.2.7 to 3.3.0
+    - [Release notes](https://github.com/pylint-dev/pylint/releases)
+    - [Commits](https://github.com/pylint-dev/pylint/compare/v3.2.7...v3.3.0)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: pylint
+      dependency-type: direct:production
+      update-type: version-update:semver-minor
+      dependency-group: linter-python-dependencies
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    * [sdk/python]: disable positional arguments
+    
+    * [sdk/python]: disable invalid name
+    
+    * [dependency]: Bump aiohttp
+    
+    Bumps the sdk-python-dependencies group in /sdk/python with 1 update: [aiohttp](https://github.com/aio-libs/aiohttp).
+    
+    
+    Updates `aiohttp` from 3.10.5 to 3.10.8
+    - [Release notes](https://github.com/aio-libs/aiohttp/releases)
+    - [Changelog](https://github.com/aio-libs/aiohttp/blob/master/CHANGES.rst)
+    - [Commits](https://github.com/aio-libs/aiohttp/compare/v3.10.5...v3.10.8)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: aiohttp
+      dependency-type: direct:development
+      update-type: version-update:semver-patch
+      dependency-group: sdk-python-dependencies
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    * [dependency]: Bump eslint-plugin-jsdoc
+    
+    Bumps the rest-dependencies group in /client/rest with 1 update: [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc).
+    
+    
+    Updates `eslint-plugin-jsdoc` from 50.2.4 to 50.3.0
+    - [Release notes](https://github.com/gajus/eslint-plugin-jsdoc/releases)
+    - [Changelog](https://github.com/gajus/eslint-plugin-jsdoc/blob/main/.releaserc)
+    - [Commits](https://github.com/gajus/eslint-plugin-jsdoc/compare/v50.2.4...v50.3.0)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: eslint-plugin-jsdoc
+      dependency-type: direct:development
+      update-type: version-update:semver-minor
+      dependency-group: rest-dependencies
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    * [dependency]: Bump the sdk-javascript-dependencies group
+    
+    Bumps the sdk-javascript-dependencies group in /sdk/javascript with 2 updates: [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc) and [webpack](https://github.com/webpack/webpack).
+    
+    
+    Updates `eslint-plugin-jsdoc` from 50.2.4 to 50.3.0
+    - [Release notes](https://github.com/gajus/eslint-plugin-jsdoc/releases)
+    - [Changelog](https://github.com/gajus/eslint-plugin-jsdoc/blob/main/.releaserc)
+    - [Commits](https://github.com/gajus/eslint-plugin-jsdoc/compare/v50.2.4...v50.3.0)
+    
+    Updates `webpack` from 5.94.0 to 5.95.0
+    - [Release notes](https://github.com/webpack/webpack/releases)
+    - [Commits](https://github.com/webpack/webpack/compare/v5.94.0...v5.95.0)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: eslint-plugin-jsdoc
+      dependency-type: direct:development
+      update-type: version-update:semver-minor
+      dependency-group: sdk-javascript-dependencies
+    - dependency-name: webpack
+      dependency-type: direct:development
+      update-type: version-update:semver-minor
+      dependency-group: sdk-javascript-dependencies
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    * [dependency]: Bump aiohttp
+    
+    Bumps the sdk-python-dependencies group in /sdk/python with 1 update: [aiohttp](https://github.com/aio-libs/aiohttp).
+    
+    
+    Updates `aiohttp` from 3.10.5 to 3.10.8
+    - [Release notes](https://github.com/aio-libs/aiohttp/releases)
+    - [Changelog](https://github.com/aio-libs/aiohttp/blob/master/CHANGES.rst)
+    - [Commits](https://github.com/aio-libs/aiohttp/compare/v3.10.5...v3.10.8)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: aiohttp
+      dependency-type: direct:development
+      update-type: version-update:semver-patch
+      dependency-group: sdk-python-dependencies
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    * [dependency]: Bump the sdk-javascript-dependencies group
+    
+    Bumps the sdk-javascript-dependencies group in /sdk/javascript with 2 updates: [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc) and [webpack](https://github.com/webpack/webpack).
+    
+    
+    Updates `eslint-plugin-jsdoc` from 50.2.4 to 50.3.0
+    - [Release notes](https://github.com/gajus/eslint-plugin-jsdoc/releases)
+    - [Changelog](https://github.com/gajus/eslint-plugin-jsdoc/blob/main/.releaserc)
+    - [Commits](https://github.com/gajus/eslint-plugin-jsdoc/compare/v50.2.4...v50.3.0)
+    
+    Updates `webpack` from 5.94.0 to 5.95.0
+    - [Release notes](https://github.com/webpack/webpack/releases)
+    - [Commits](https://github.com/webpack/webpack/compare/v5.94.0...v5.95.0)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: eslint-plugin-jsdoc
+      dependency-type: direct:development
+      update-type: version-update:semver-minor
+      dependency-group: sdk-javascript-dependencies
+    - dependency-name: webpack
+      dependency-type: direct:development
+      update-type: version-update:semver-minor
+      dependency-group: sdk-javascript-dependencies
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    * [dependency]: Bump eslint-plugin-jsdoc
+    
+    Bumps the rest-dependencies group in /client/rest with 1 update: [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc).
+    
+    
+    Updates `eslint-plugin-jsdoc` from 50.2.4 to 50.3.0
+    - [Release notes](https://github.com/gajus/eslint-plugin-jsdoc/releases)
+    - [Changelog](https://github.com/gajus/eslint-plugin-jsdoc/blob/main/.releaserc)
+    - [Commits](https://github.com/gajus/eslint-plugin-jsdoc/compare/v50.2.4...v50.3.0)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: eslint-plugin-jsdoc
+      dependency-type: direct:development
+      update-type: version-update:semver-minor
+      dependency-group: rest-dependencies
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    * [linters]: bump pylint
+    
+    ---------
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+    Co-authored-by: wayonb <wayon@symbol.dev>
+    Co-authored-by: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+
+[33mcommit 93282084a98a31d3dba25db181ff97bb5b98d07e[m
+Author: Wayonb <wayon@symbol.dev>
+Date:   Sun Sep 29 21:52:03 2024 -0400
+
+    [catapult/client] fix: Fedora Conan build failing
+    
+    problem: CI build for Fedora Conan image fails due to incorrect command
+    solution: update the Conan build stage to support Fedora
+
+[33mcommit 1415770e6eac447fe280628dc52f3df79ecf4ed0[m
+Author: Wayonb <wayon@symbol.dev>
+Date:   Sun Sep 29 21:42:38 2024 -0400
+
+    [jenkins] fix: groovy failing linting with latest groovy lint
+    
+    problem: npm-groovy-lint 15.0.1 and greater fails to lint Jenkins groovy files
+    solution: stay with npm-groovy-lint@15.0.0 until the issue is fixed.
+
+[33mcommit f8ab7c8dbaf134ca8a49b35db17b7f2dacd00769[m
+Author: symbol-github-bot[bot] <96548077+symbol-github-bot[bot]@users.noreply.github.com>
+Date:   Tue Sep 24 10:49:23 2024 -0400
+
+    [client/catapult] fix: update catapult dependency
+    
+    mongo-c-driver 1.27.5 -> 1.28.0
+    rocksdb 9.4.0 -> 9.6.1
+    openssl 3.3.1 -> 3.3.2
+    
+    ---------
+    
+    Co-authored-by: symbol-bot <jenkins@symbol.dev>
+    Co-authored-by: wayonb <wayon@symbol.dev>
+
+[33mcommit d6e12c223bb8d03d7a9dae09258f76b5550652d9[m
+Author: Wayonb <wayon@symbol.dev>
+Date:   Mon Sep 23 15:24:58 2024 -0400
+
+    [jenkins] fix: create jenkins c++ versioned caching
+    
+    problem: ABI for compilers is forward compatibility
+    solution: move compiler caching into a versioned folder
+
+[33mcommit 611f7ce39e2452af4e3f9caf1dd1f51ce23a006c[m
+Author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+Date:   Mon Sep 23 14:09:39 2024 +0000
+
+    [dependency]: Combine dependabot PRs
+    
+    * [dependency]: Bump eslint-plugin-jsdoc
+    
+    Bumps the sdk-javascript-dependencies group in /sdk/javascript with 1 update: [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc).
+    
+    
+    Updates `eslint-plugin-jsdoc` from 50.2.3 to 50.2.4
+    - [Release notes](https://github.com/gajus/eslint-plugin-jsdoc/releases)
+    - [Changelog](https://github.com/gajus/eslint-plugin-jsdoc/blob/main/.releaserc)
+    - [Commits](https://github.com/gajus/eslint-plugin-jsdoc/compare/v50.2.3...v50.2.4)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: eslint-plugin-jsdoc
+      dependency-type: direct:development
+      update-type: version-update:semver-patch
+      dependency-group: sdk-javascript-dependencies
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    * [dependency]: Bump eslint-plugin-jsdoc
+    
+    Bumps the rest-dependencies group in /client/rest with 1 update: [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc).
+    
+    
+    Updates `eslint-plugin-jsdoc` from 50.2.3 to 50.2.4
+    - [Release notes](https://github.com/gajus/eslint-plugin-jsdoc/releases)
+    - [Changelog](https://github.com/gajus/eslint-plugin-jsdoc/blob/main/.releaserc)
+    - [Commits](https://github.com/gajus/eslint-plugin-jsdoc/compare/v50.2.3...v50.2.4)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: eslint-plugin-jsdoc
+      dependency-type: direct:development
+      update-type: version-update:semver-patch
+      dependency-group: rest-dependencies
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    * [dependency]: Bump websockets
+    
+    Bumps the sdk-python-dependencies group in /sdk/python with 1 update: [websockets](https://github.com/python-websockets/websockets).
+    
+    
+    Updates `websockets` from 13.0.1 to 13.1
+    - [Release notes](https://github.com/python-websockets/websockets/releases)
+    - [Commits](https://github.com/python-websockets/websockets/compare/13.0.1...13.1)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: websockets
+      dependency-type: direct:development
+      update-type: version-update:semver-minor
+      dependency-group: sdk-python-dependencies
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    ---------
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
+[33mcommit 28778b1110f0b0e8903902366e75717c30b73378[m
+Author: Wayonb <wayon@symbol.dev>
+Date:   Mon Sep 23 09:38:26 2024 -0400
+
+    [jenkins] fix: remove invalid chars
+    
+    problem: Javascript docker build fails on Windows
+    solution: remove invalid chars
+
+[33mcommit 0a31d132c01d77647d922503d683a4360c98ab4f[m
+Author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+Date:   Mon Sep 16 14:15:08 2024 -0400
+
+    [dependency]: Combine dependabot PRs
+    
+    * [dependency]: Bump the rest-dependencies group
+    
+    Bumps the rest-dependencies group in /client/rest with 2 updates: [mongodb](https://github.com/mongodb/node-mongodb-native) and [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc).
+    
+    
+    Updates `mongodb` from 6.8.1 to 6.9.0
+    - [Release notes](https://github.com/mongodb/node-mongodb-native/releases)
+    - [Changelog](https://github.com/mongodb/node-mongodb-native/blob/main/HISTORY.md)
+    - [Commits](https://github.com/mongodb/node-mongodb-native/compare/v6.8.1...v6.9.0)
+    
+    Updates `eslint-plugin-jsdoc` from 50.2.2 to 50.2.3
+    - [Release notes](https://github.com/gajus/eslint-plugin-jsdoc/releases)
+    - [Changelog](https://github.com/gajus/eslint-plugin-jsdoc/blob/main/.releaserc)
+    - [Commits](https://github.com/gajus/eslint-plugin-jsdoc/compare/v50.2.2...v50.2.3)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: mongodb
+      dependency-type: direct:production
+      update-type: version-update:semver-minor
+      dependency-group: rest-dependencies
+    - dependency-name: eslint-plugin-jsdoc
+      dependency-type: direct:development
+      update-type: version-update:semver-patch
+      dependency-group: rest-dependencies
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    * [dependency]: Bump sinon from 18.0.0 to 19.0.2 in /client/rest
+    
+    Bumps [sinon](https://github.com/sinonjs/sinon) from 18.0.0 to 19.0.2.
+    - [Release notes](https://github.com/sinonjs/sinon/releases)
+    - [Changelog](https://github.com/sinonjs/sinon/blob/main/docs/changelog.md)
+    - [Commits](https://github.com/sinonjs/sinon/compare/v18.0.0...v19.0.2)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: sinon
+      dependency-type: direct:development
+      update-type: version-update:semver-major
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+    
+    * [dependency]: Bump the sdk-javascript-dependencies group
+    
+    Bumps the sdk-javascript-dependencies group in /sdk/javascript with 4 updates: [@types/mocha](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/HEAD/types/mocha), [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc), [typedoc](https://github.com/TypeStrong/TypeDoc) and [typescript](https://github.com/microsoft/TypeScript).
+    
+    
+    Updates `@types/mocha` from 10.0.7 to 10.0.8
+    - [Release notes](https://github.com/DefinitelyTyped/DefinitelyTyped/releases)
+    - [Commits](https://github.com/DefinitelyTyped/DefinitelyTyped/commits/HEAD/types/mocha)
+    
+    Updates `eslint-plugin-jsdoc` from 50.2.2 to 50.2.3
+    - [Release notes](https://github.com/gajus/eslint-plugin-jsdoc/releases)
+    - [Changelog](https://github.com/gajus/eslint-plugin-jsdoc/blob/main/.releaserc)
+    - [Commits](https://github.com/gajus/eslint-plugin-jsdoc/compare/v50.2.2...v50.2.3)
+    
+    Updates `typedoc` from 0.26.6 to 0.26.7
+    - [Release notes](https://github.com/TypeStrong/TypeDoc/releases)
+    - [Changelog](https://github.com/TypeStrong/typedoc/blob/master/CHANGELOG.md)
+    - [Commits](https://github.com/TypeStrong/TypeDoc/compare/v0.26.6...v0.26.7)
+    
+    Updates `typescript` from 5.5.4 to 5.6.2
+    - [Release notes](https://github.com/microsoft/TypeScript/releases)
+    - [Changelog](https://github.com/microsoft/TypeScript/blob/main/azure-pipelines.release.yml)
+    - [Commits](https://github.com/microsoft/TypeScript/compare/v5.5.4...v5.6.2)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: "@types/mocha"
+      dependency-type: direct:development
+      update-type: version-update:semver-patch
+      dependency-group: sdk-javascript-dependencies
+    - dependency-name: eslint-plugin-jsdoc
+      dependency-type: direct:development
+      update-typ
