@@ -23,10 +23,10 @@ class PodTypeFormatter(AbstractTypeFormatter):
 		return self.pod.display_type.is_array
 
 	def get_fields(self):
-		return [f'SIZE = {self.pod.size}']
+		return [f'static const int SIZE = {self.pod.size};']
 
 	def get_base_class(self):
-		return '(ByteArray)' if self._is_array else '(BaseValue)'
+		return 'ByteArray' if self._is_array else 'BaseValue'
 
 	def get_ctor_descriptor(self):
 		variable_name = self.printer.name
@@ -39,8 +39,12 @@ class PodTypeFormatter(AbstractTypeFormatter):
 		return MethodDescriptor(body=body, arguments=arguments)
 
 	def get_deserialize_descriptor(self):
-		body = 'buffer = memoryview(payload)\n'
-		body += f'return {self.typename}({self.printer.load()})'
+		if self._is_array:
+			body = 'std::vector<uint8_t> buffer(payload.begin(), payload.begin() + SIZE)\n'
+			body += f'return {self.typename}({self.printer.load()})'
+			return MethodDescriptor(body=body)
+
+		body = f'return {self.typename}({self.printer.load("payload")})'
 		return MethodDescriptor(body=body)
 
 	def get_serialize_descriptor(self):

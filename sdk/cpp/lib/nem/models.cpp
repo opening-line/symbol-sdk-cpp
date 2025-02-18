@@ -13,15 +13,15 @@
 using namespace CatBuffer;
 using namespace std;
 
-class Amount : public BaseValue {
-	public:
-		SIZE = 8;
+class Amount : public (BaseValue) {
+public:
+	SIZE = 8;
 
-	void Amount(amount: int = 0) {
+	 Amount(amount: int = 0) {
 		super().__init__(self.SIZE, amount, Amount);
 	}
 
-	Amount deserialize(const std::vector<uint8_t>& buffer) {
+	Amount deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		return Amount(int.from_bytes(buffer[:8], byteorder='little', signed=False));
 	}
@@ -32,15 +32,15 @@ class Amount : public BaseValue {
 };
 
 
-class Height : public BaseValue {
-	public:
-		SIZE = 8;
+class Height : public (BaseValue) {
+public:
+	SIZE = 8;
 
-	void Height(height: int = 0) {
+	 Height(height: int = 0) {
 		super().__init__(self.SIZE, height, Height);
 	}
 
-	Height deserialize(const std::vector<uint8_t>& buffer) {
+	Height deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		return Height(int.from_bytes(buffer[:8], byteorder='little', signed=False));
 	}
@@ -51,15 +51,15 @@ class Height : public BaseValue {
 };
 
 
-class Timestamp : public BaseValue {
-	public:
-		SIZE = 4;
+class Timestamp : public (BaseValue) {
+public:
+	SIZE = 4;
 
-	void Timestamp(timestamp: int = 0) {
+	 Timestamp(timestamp: int = 0) {
 		super().__init__(self.SIZE, timestamp, Timestamp);
 	}
 
-	Timestamp deserialize(const std::vector<uint8_t>& buffer) {
+	Timestamp deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		return Timestamp(int.from_bytes(buffer[:4], byteorder='little', signed=False));
 	}
@@ -70,19 +70,19 @@ class Timestamp : public BaseValue {
 };
 
 
-class Address : public ByteArray {
-	public:
-		SIZE = 40;
+class Address : public (ByteArray) {
+public:
+	SIZE = 40;
 
-	void Address(address: StrBytes = bytes(40)) {
+	 Address(address: StrBytes = bytes(40)) {
 		super().__init__(self.SIZE, address, Address);
 	}
 
-	size_t size() {
+	int get_size() {
 		return 40;
 	}
 
-	Address deserialize(const std::vector<uint8_t>& buffer) {
+	Address deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		return Address(ArrayHelpers.get_bytes(buffer, 40));
 	}
@@ -93,19 +93,19 @@ class Address : public ByteArray {
 };
 
 
-class Hash256 : public ByteArray {
-	public:
-		SIZE = 32;
+class Hash256 : public (ByteArray) {
+public:
+	SIZE = 32;
 
-	void Hash256(hash256: StrBytes = bytes(32)) {
+	 Hash256(hash256: StrBytes = bytes(32)) {
 		super().__init__(self.SIZE, hash256, Hash256);
 	}
 
-	size_t size() {
+	int get_size() {
 		return 32;
 	}
 
-	Hash256 deserialize(const std::vector<uint8_t>& buffer) {
+	Hash256 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		return Hash256(ArrayHelpers.get_bytes(buffer, 32));
 	}
@@ -116,19 +116,19 @@ class Hash256 : public ByteArray {
 };
 
 
-class PublicKey : public ByteArray {
-	public:
-		SIZE = 32;
+class PublicKey : public (ByteArray) {
+public:
+	SIZE = 32;
 
-	void PublicKey(public_key: StrBytes = bytes(32)) {
+	 PublicKey(public_key: StrBytes = bytes(32)) {
 		super().__init__(self.SIZE, public_key, PublicKey);
 	}
 
-	size_t size() {
+	int get_size() {
 		return 32;
 	}
 
-	PublicKey deserialize(const std::vector<uint8_t>& buffer) {
+	PublicKey deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		return PublicKey(ArrayHelpers.get_bytes(buffer, 32));
 	}
@@ -139,19 +139,19 @@ class PublicKey : public ByteArray {
 };
 
 
-class Signature : public ByteArray {
-	public:
-		SIZE = 64;
+class Signature : public (ByteArray) {
+public:
+	SIZE = 64;
 
-	void Signature(signature: StrBytes = bytes(64)) {
+	 Signature(signature: StrBytes = bytes(64)) {
 		super().__init__(self.SIZE, signature, Signature);
 	}
 
-	size_t size() {
+	int get_size() {
 		return 64;
 	}
 
-	Signature deserialize(const std::vector<uint8_t>& buffer) {
+	Signature deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		return Signature(ArrayHelpers.get_bytes(buffer, 64));
 	}
@@ -162,18 +162,18 @@ class Signature : public ByteArray {
 };
 
 
-class NetworkType : public Enum {
-	public:
-		MAINNET = 104
-		;
-		TESTNET = 152
-		;
+class NetworkType : public (Enum) {
+public:
+	MAINNET = 104
+	;
+	TESTNET = 152
+	;
 
-	size_t size() {
+	int get_size() {
 		return 1;
 	}
 
-	NetworkType deserialize(const std::vector<uint8_t>& buffer) {
+	NetworkType deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		return NetworkType(int.from_bytes(buffer[:1], byteorder='little', signed=False));
 	}
@@ -190,30 +190,30 @@ class NetworkType : public Enum {
 };
 
 
-class TransactionType : public Enum {
-	public:
-		TRANSFER = 257
-		;
-		ACCOUNT_KEY_LINK = 2049
-		;
-		MULTISIG_ACCOUNT_MODIFICATION = 4097
-		;
-		MULTISIG_COSIGNATURE = 4098
-		;
-		MULTISIG = 4100
-		;
-		NAMESPACE_REGISTRATION = 8193
-		;
-		MOSAIC_DEFINITION = 16385
-		;
-		MOSAIC_SUPPLY_CHANGE = 16386
-		;
+class TransactionType : public (Enum) {
+public:
+	TRANSFER = 257
+	;
+	ACCOUNT_KEY_LINK = 2049
+	;
+	MULTISIG_ACCOUNT_MODIFICATION = 4097
+	;
+	MULTISIG_COSIGNATURE = 4098
+	;
+	MULTISIG = 4100
+	;
+	NAMESPACE_REGISTRATION = 8193
+	;
+	MOSAIC_DEFINITION = 16385
+	;
+	MOSAIC_SUPPLY_CHANGE = 16386
+	;
 
-	size_t size() {
+	int get_size() {
 		return 4;
 	}
 
-	TransactionType deserialize(const std::vector<uint8_t>& buffer) {
+	TransactionType deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		return TransactionType(int.from_bytes(buffer[:4], byteorder='little', signed=False));
 	}
@@ -231,19 +231,19 @@ class TransactionType : public Enum {
 
 
 class Transaction {
-	public:
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'signature': 'pod:Signature',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp'
-		}
-		;
+public:
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'signature': 'pod:Signature',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp'
+	}
+	;
 
-	void Transaction() {
+	 Transaction() {
 		self._type_ = TransactionType.TRANSFER;
 		self._version = 0;
 		self._network = NetworkType.MAINNET;
@@ -261,71 +261,87 @@ class Transaction {
 		pass;
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Signature signature() {
+	Signature signature()@property
+	 {
 		return self._signature;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void signature(value: Signature) {
+	void signature(value: Signature)@signature.setter
+	 {
 		self._signature = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -341,7 +357,7 @@ class Transaction {
 		return size;
 	}
 
-	Transaction deserialize(const std::vector<uint8_t>& buffer) {
+	Transaction deserialize(std::vector<uint8_t> payload) {
 		size_ = len(buffer);
 		type_ = TransactionType.deserialize(buffer);
 		buffer = buffer[type_.size:];
@@ -417,18 +433,18 @@ class Transaction {
 
 
 class NonVerifiableTransaction {
-	public:
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp'
-		}
-		;
+public:
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp'
+	}
+	;
 
-	void NonVerifiableTransaction() {
+	 NonVerifiableTransaction() {
 		self._type_ = TransactionType.TRANSFER;
 		self._version = 0;
 		self._network = NetworkType.MAINNET;
@@ -444,63 +460,77 @@ class NonVerifiableTransaction {
 		pass;
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -514,7 +544,7 @@ class NonVerifiableTransaction {
 		return size;
 	}
 
-	NonVerifiableTransaction deserialize(const std::vector<uint8_t>& buffer) {
+	NonVerifiableTransaction deserialize(std::vector<uint8_t> payload) {
 		size_ = len(buffer);
 		type_ = TransactionType.deserialize(buffer);
 		buffer = buffer[type_.size:];
@@ -581,18 +611,18 @@ class NonVerifiableTransaction {
 };
 
 
-class LinkAction : public Enum {
-	public:
-		LINK = 1
-		;
-		UNLINK = 2
-		;
+class LinkAction : public (Enum) {
+public:
+	LINK = 1
+	;
+	UNLINK = 2
+	;
 
-	size_t size() {
+	int get_size() {
 		return 4;
 	}
 
-	LinkAction deserialize(const std::vector<uint8_t>& buffer) {
+	LinkAction deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		return LinkAction(int.from_bytes(buffer[:4], byteorder='little', signed=False));
 	}
@@ -609,24 +639,24 @@ class LinkAction : public Enum {
 };
 
 
-class AccountKeyLinkTransactionV1 : public Transaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.ACCOUNT_KEY_LINK;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'signature': 'pod:Signature',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'link_action': 'enum:LinkAction',
-			'remote_public_key': 'pod:PublicKey'
-		}
-		;
+class AccountKeyLinkTransactionV1 : public (Transaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.ACCOUNT_KEY_LINK;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'signature': 'pod:Signature',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'link_action': 'enum:LinkAction',
+		'remote_public_key': 'pod:PublicKey'
+	}
+	;
 
-	void AccountKeyLinkTransactionV1() {
+	 AccountKeyLinkTransactionV1() {
 		self._type_ = AccountKeyLinkTransactionV1.TRANSACTION_TYPE;
 		self._version = AccountKeyLinkTransactionV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -647,87 +677,107 @@ class AccountKeyLinkTransactionV1 : public Transaction {
 		pass;
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Signature signature() {
+	Signature signature()@property
+	 {
 		return self._signature;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	LinkAction link_action() {
+	LinkAction link_action()@property
+	 {
 		return self._link_action;
 	}
 
-	PublicKey remote_public_key() {
+	PublicKey remote_public_key()@property
+	 {
 		return self._remote_public_key;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void signature(value: Signature) {
+	void signature(value: Signature)@signature.setter
+	 {
 		self._signature = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void link_action(value: LinkAction) {
+	void link_action(value: LinkAction)@link_action.setter
+	 {
 		self._link_action = value;
 	}
 
-	void remote_public_key(value: PublicKey) {
+	void remote_public_key(value: PublicKey)@remote_public_key.setter
+	 {
 		self._remote_public_key = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -746,7 +796,7 @@ class AccountKeyLinkTransactionV1 : public Transaction {
 		return size;
 	}
 
-	AccountKeyLinkTransactionV1 deserialize(const std::vector<uint8_t>& buffer) {
+	AccountKeyLinkTransactionV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = AccountKeyLinkTransactionV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -848,23 +898,23 @@ class AccountKeyLinkTransactionV1 : public Transaction {
 };
 
 
-class NonVerifiableAccountKeyLinkTransactionV1 : public NonVerifiableTransaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.ACCOUNT_KEY_LINK;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'link_action': 'enum:LinkAction',
-			'remote_public_key': 'pod:PublicKey'
-		}
-		;
+class NonVerifiableAccountKeyLinkTransactionV1 : public (NonVerifiableTransaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.ACCOUNT_KEY_LINK;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'link_action': 'enum:LinkAction',
+		'remote_public_key': 'pod:PublicKey'
+	}
+	;
 
-	void NonVerifiableAccountKeyLinkTransactionV1() {
+	 NonVerifiableAccountKeyLinkTransactionV1() {
 		self._type_ = NonVerifiableAccountKeyLinkTransactionV1.TRANSACTION_TYPE;
 		self._version = NonVerifiableAccountKeyLinkTransactionV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -883,79 +933,97 @@ class NonVerifiableAccountKeyLinkTransactionV1 : public NonVerifiableTransaction
 		pass;
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	LinkAction link_action() {
+	LinkAction link_action()@property
+	 {
 		return self._link_action;
 	}
 
-	PublicKey remote_public_key() {
+	PublicKey remote_public_key()@property
+	 {
 		return self._remote_public_key;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void link_action(value: LinkAction) {
+	void link_action(value: LinkAction)@link_action.setter
+	 {
 		self._link_action = value;
 	}
 
-	void remote_public_key(value: PublicKey) {
+	void remote_public_key(value: PublicKey)@remote_public_key.setter
+	 {
 		self._remote_public_key = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -972,7 +1040,7 @@ class NonVerifiableAccountKeyLinkTransactionV1 : public NonVerifiableTransaction
 		return size;
 	}
 
-	NonVerifiableAccountKeyLinkTransactionV1 deserialize(const std::vector<uint8_t>& buffer) {
+	NonVerifiableAccountKeyLinkTransactionV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = NonVerifiableAccountKeyLinkTransactionV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -1065,13 +1133,13 @@ class NonVerifiableAccountKeyLinkTransactionV1 : public NonVerifiableTransaction
 
 
 class NamespaceId {
-	public:
-		TYPE_HINTS = {
-			'name': 'bytes_array'
-		}
-		;
+public:
+	TYPE_HINTS = {
+		'name': 'bytes_array'
+	}
+	;
 
-	void NamespaceId() {
+	 NamespaceId() {
 		self._name = bytes();
 	}
 
@@ -1079,22 +1147,24 @@ class NamespaceId {
 		pass;
 	}
 
-	bytes name() {
+	bytes name()@property
+	 {
 		return self._name;
 	}
 
-	void name(value: bytes) {
+	void name(value: bytes)@name.setter
+	 {
 		self._name = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += 4;
 		size += len(self._name);
 		return size;
 	}
 
-	NamespaceId deserialize(const std::vector<uint8_t>& buffer) {
+	NamespaceId deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = NamespaceId();
 		name_size = int.from_bytes(buffer[:4], byteorder='little', signed=False);
@@ -1130,14 +1200,14 @@ class NamespaceId {
 
 
 class MosaicId {
-	public:
-		TYPE_HINTS = {
-			'namespace_id': 'struct:NamespaceId',
-			'name': 'bytes_array'
-		}
-		;
+public:
+	TYPE_HINTS = {
+		'namespace_id': 'struct:NamespaceId',
+		'name': 'bytes_array'
+	}
+	;
 
-	void MosaicId() {
+	 MosaicId() {
 		self._namespace_id = NamespaceId();
 		self._name = bytes();
 	}
@@ -1146,23 +1216,27 @@ class MosaicId {
 		self._namespace_id.sort();
 	}
 
-	NamespaceId namespace_id() {
+	NamespaceId namespace_id()@property
+	 {
 		return self._namespace_id;
 	}
 
-	bytes name() {
+	bytes name()@property
+	 {
 		return self._name;
 	}
 
-	void namespace_id(value: NamespaceId) {
+	void namespace_id(value: NamespaceId)@namespace_id.setter
+	 {
 		self._namespace_id = value;
 	}
 
-	void name(value: bytes) {
+	void name(value: bytes)@name.setter
+	 {
 		self._name = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.namespace_id.size;
 		size += 4;
@@ -1170,7 +1244,7 @@ class MosaicId {
 		return size;
 	}
 
-	MosaicId deserialize(const std::vector<uint8_t>& buffer) {
+	MosaicId deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = MosaicId();
 		namespace_id = NamespaceId.deserialize(buffer);
@@ -1212,14 +1286,14 @@ class MosaicId {
 
 
 class Mosaic {
-	public:
-		TYPE_HINTS = {
-			'mosaic_id': 'struct:MosaicId',
-			'amount': 'pod:Amount'
-		}
-		;
+public:
+	TYPE_HINTS = {
+		'mosaic_id': 'struct:MosaicId',
+		'amount': 'pod:Amount'
+	}
+	;
 
-	void Mosaic() {
+	 Mosaic() {
 		self._mosaic_id = MosaicId();
 		self._amount = Amount();
 	}
@@ -1228,23 +1302,27 @@ class Mosaic {
 		self._mosaic_id.sort();
 	}
 
-	MosaicId mosaic_id() {
+	MosaicId mosaic_id()@property
+	 {
 		return self._mosaic_id;
 	}
 
-	Amount amount() {
+	Amount amount()@property
+	 {
 		return self._amount;
 	}
 
-	void mosaic_id(value: MosaicId) {
+	void mosaic_id(value: MosaicId)@mosaic_id.setter
+	 {
 		self._mosaic_id = value;
 	}
 
-	void amount(value: Amount) {
+	void amount(value: Amount)@amount.setter
+	 {
 		self._amount = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += 4;
 		size += self.mosaic_id.size;
@@ -1252,7 +1330,7 @@ class Mosaic {
 		return size;
 	}
 
-	Mosaic deserialize(const std::vector<uint8_t>& buffer) {
+	Mosaic deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = Mosaic();
 		mosaic_id_size = int.from_bytes(buffer[:4], byteorder='little', signed=False);
@@ -1295,13 +1373,13 @@ class Mosaic {
 
 
 class SizePrefixedMosaic {
-	public:
-		TYPE_HINTS = {
-			'mosaic': 'struct:Mosaic'
-		}
-		;
+public:
+	TYPE_HINTS = {
+		'mosaic': 'struct:Mosaic'
+	}
+	;
 
-	void SizePrefixedMosaic() {
+	 SizePrefixedMosaic() {
 		self._mosaic = Mosaic();
 	}
 
@@ -1309,22 +1387,24 @@ class SizePrefixedMosaic {
 		self._mosaic.sort();
 	}
 
-	Mosaic mosaic() {
+	Mosaic mosaic()@property
+	 {
 		return self._mosaic;
 	}
 
-	void mosaic(value: Mosaic) {
+	void mosaic(value: Mosaic)@mosaic.setter
+	 {
 		self._mosaic = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += 4;
 		size += self.mosaic.size;
 		return size;
 	}
 
-	SizePrefixedMosaic deserialize(const std::vector<uint8_t>& buffer) {
+	SizePrefixedMosaic deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = SizePrefixedMosaic();
 		mosaic_size = int.from_bytes(buffer[:4], byteorder='little', signed=False);
@@ -1360,18 +1440,18 @@ class SizePrefixedMosaic {
 };
 
 
-class MosaicTransferFeeType : public Enum {
-	public:
-		ABSOLUTE = 1
-		;
-		PERCENTILE = 2
-		;
+class MosaicTransferFeeType : public (Enum) {
+public:
+	ABSOLUTE = 1
+	;
+	PERCENTILE = 2
+	;
 
-	size_t size() {
+	int get_size() {
 		return 4;
 	}
 
-	MosaicTransferFeeType deserialize(const std::vector<uint8_t>& buffer) {
+	MosaicTransferFeeType deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		return MosaicTransferFeeType(int.from_bytes(buffer[:4], byteorder='little', signed=False));
 	}
@@ -1389,16 +1469,16 @@ class MosaicTransferFeeType : public Enum {
 
 
 class MosaicLevy {
-	public:
-		TYPE_HINTS = {
-			'transfer_fee_type': 'enum:MosaicTransferFeeType',
-			'recipient_address': 'pod:Address',
-			'mosaic_id': 'struct:MosaicId',
-			'fee': 'pod:Amount'
-		}
-		;
+public:
+	TYPE_HINTS = {
+		'transfer_fee_type': 'enum:MosaicTransferFeeType',
+		'recipient_address': 'pod:Address',
+		'mosaic_id': 'struct:MosaicId',
+		'fee': 'pod:Amount'
+	}
+	;
 
-	void MosaicLevy() {
+	 MosaicLevy() {
 		self._transfer_fee_type = MosaicTransferFeeType.ABSOLUTE;
 		self._recipient_address = Address();
 		self._mosaic_id = MosaicId();
@@ -1410,39 +1490,47 @@ class MosaicLevy {
 		self._mosaic_id.sort();
 	}
 
-	MosaicTransferFeeType transfer_fee_type() {
+	MosaicTransferFeeType transfer_fee_type()@property
+	 {
 		return self._transfer_fee_type;
 	}
 
-	Address recipient_address() {
+	Address recipient_address()@property
+	 {
 		return self._recipient_address;
 	}
 
-	MosaicId mosaic_id() {
+	MosaicId mosaic_id()@property
+	 {
 		return self._mosaic_id;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	void transfer_fee_type(value: MosaicTransferFeeType) {
+	void transfer_fee_type(value: MosaicTransferFeeType)@transfer_fee_type.setter
+	 {
 		self._transfer_fee_type = value;
 	}
 
-	void recipient_address(value: Address) {
+	void recipient_address(value: Address)@recipient_address.setter
+	 {
 		self._recipient_address = value;
 	}
 
-	void mosaic_id(value: MosaicId) {
+	void mosaic_id(value: MosaicId)@mosaic_id.setter
+	 {
 		self._mosaic_id = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.transfer_fee_type.size;
 		size += 4;
@@ -1453,7 +1541,7 @@ class MosaicLevy {
 		return size;
 	}
 
-	MosaicLevy deserialize(const std::vector<uint8_t>& buffer) {
+	MosaicLevy deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = MosaicLevy();
 		transfer_fee_type = MosaicTransferFeeType.deserialize(buffer);
@@ -1512,14 +1600,14 @@ class MosaicLevy {
 
 
 class MosaicProperty {
-	public:
-		TYPE_HINTS = {
-			'name': 'bytes_array',
-			'value': 'bytes_array'
-		}
-		;
+public:
+	TYPE_HINTS = {
+		'name': 'bytes_array',
+		'value': 'bytes_array'
+	}
+	;
 
-	void MosaicProperty() {
+	 MosaicProperty() {
 		self._name = bytes();
 		self._value = bytes();
 	}
@@ -1528,23 +1616,27 @@ class MosaicProperty {
 		pass;
 	}
 
-	bytes name() {
+	bytes name()@property
+	 {
 		return self._name;
 	}
 
-	bytes value() {
+	bytes value()@property
+	 {
 		return self._value;
 	}
 
-	void name(value: bytes) {
+	void name(value: bytes)@name.setter
+	 {
 		self._name = value;
 	}
 
-	void value(value: bytes) {
+	void value(value: bytes)@value.setter
+	 {
 		self._value = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += 4;
 		size += len(self._name);
@@ -1553,7 +1645,7 @@ class MosaicProperty {
 		return size;
 	}
 
-	MosaicProperty deserialize(const std::vector<uint8_t>& buffer) {
+	MosaicProperty deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = MosaicProperty();
 		name_size = int.from_bytes(buffer[:4], byteorder='little', signed=False);
@@ -1598,13 +1690,13 @@ class MosaicProperty {
 
 
 class SizePrefixedMosaicProperty {
-	public:
-		TYPE_HINTS = {
-			'property_': 'struct:MosaicProperty'
-		}
-		;
+public:
+	TYPE_HINTS = {
+		'property_': 'struct:MosaicProperty'
+	}
+	;
 
-	void SizePrefixedMosaicProperty() {
+	 SizePrefixedMosaicProperty() {
 		self._property_ = MosaicProperty();
 	}
 
@@ -1612,22 +1704,24 @@ class SizePrefixedMosaicProperty {
 		self._property_.sort();
 	}
 
-	MosaicProperty property_() {
+	MosaicProperty property_()@property
+	 {
 		return self._property_;
 	}
 
-	void property_(value: MosaicProperty) {
+	void property_(value: MosaicProperty)@property_.setter
+	 {
 		self._property_ = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += 4;
 		size += self.property_.size;
 		return size;
 	}
 
-	SizePrefixedMosaicProperty deserialize(const std::vector<uint8_t>& buffer) {
+	SizePrefixedMosaicProperty deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = SizePrefixedMosaicProperty();
 		property_size = int.from_bytes(buffer[:4], byteorder='little', signed=False);
@@ -1664,17 +1758,17 @@ class SizePrefixedMosaicProperty {
 
 
 class MosaicDefinition {
-	public:
-		TYPE_HINTS = {
-			'owner_public_key': 'pod:PublicKey',
-			'id': 'struct:MosaicId',
-			'description': 'bytes_array',
-			'properties': 'array[SizePrefixedMosaicProperty]',
-			'levy': 'struct:MosaicLevy'
-		}
-		;
+public:
+	TYPE_HINTS = {
+		'owner_public_key': 'pod:PublicKey',
+		'id': 'struct:MosaicId',
+		'description': 'bytes_array',
+		'properties': 'array[SizePrefixedMosaicProperty]',
+		'levy': 'struct:MosaicLevy'
+	}
+	;
 
-	void MosaicDefinition() {
+	 MosaicDefinition() {
 		self._owner_public_key = PublicKey();
 		self._id = MosaicId();
 		self._description = bytes();
@@ -1689,51 +1783,62 @@ class MosaicDefinition {
 			self._levy.sort();
 	}
 
-	PublicKey owner_public_key() {
+	PublicKey owner_public_key()@property
+	 {
 		return self._owner_public_key;
 	}
 
-	MosaicId id() {
+	MosaicId id()@property
+	 {
 		return self._id;
 	}
 
-	bytes description() {
+	bytes description()@property
+	 {
 		return self._description;
 	}
 
-	List[SizePrefixedMosaicProperty] properties() {
+	List[SizePrefixedMosaicProperty] properties()@property
+	 {
 		return self._properties;
 	}
 
-	MosaicLevy levy() {
+	MosaicLevy levy()@property
+	 {
 		return self._levy;
 	}
 
-	int levy_size_computed() {
+	int levy_size_computed()@property
+	 {
 		return 0 if not self.levy else self.levy.size + 0;
 	}
 
-	void owner_public_key(value: PublicKey) {
+	void owner_public_key(value: PublicKey)@owner_public_key.setter
+	 {
 		self._owner_public_key = value;
 	}
 
-	void id(value: MosaicId) {
+	void id(value: MosaicId)@id.setter
+	 {
 		self._id = value;
 	}
 
-	void description(value: bytes) {
+	void description(value: bytes)@description.setter
+	 {
 		self._description = value;
 	}
 
-	void properties(value: List[SizePrefixedMosaicProperty]) {
+	void properties(value: List[SizePrefixedMosaicProperty])@properties.setter
+	 {
 		self._properties = value;
 	}
 
-	void levy(value: MosaicLevy) {
+	void levy(value: MosaicLevy)@levy.setter
+	 {
 		self._levy = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += 4;
 		size += self.owner_public_key.size;
@@ -1749,7 +1854,7 @@ class MosaicDefinition {
 		return size;
 	}
 
-	MosaicDefinition deserialize(const std::vector<uint8_t>& buffer) {
+	MosaicDefinition deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = MosaicDefinition();
 		owner_public_key_size = int.from_bytes(buffer[:4], byteorder='little', signed=False);
@@ -1827,25 +1932,25 @@ class MosaicDefinition {
 };
 
 
-class MosaicDefinitionTransactionV1 : public Transaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.MOSAIC_DEFINITION;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'signature': 'pod:Signature',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'mosaic_definition': 'struct:MosaicDefinition',
-			'rental_fee_sink': 'pod:Address',
-			'rental_fee': 'pod:Amount'
-		}
-		;
+class MosaicDefinitionTransactionV1 : public (Transaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.MOSAIC_DEFINITION;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'signature': 'pod:Signature',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'mosaic_definition': 'struct:MosaicDefinition',
+		'rental_fee_sink': 'pod:Address',
+		'rental_fee': 'pod:Amount'
+	}
+	;
 
-	void MosaicDefinitionTransactionV1() {
+	 MosaicDefinitionTransactionV1() {
 		self._type_ = MosaicDefinitionTransactionV1.TRANSACTION_TYPE;
 		self._version = MosaicDefinitionTransactionV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -1867,95 +1972,117 @@ class MosaicDefinitionTransactionV1 : public Transaction {
 		self._mosaic_definition.sort();
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Signature signature() {
+	Signature signature()@property
+	 {
 		return self._signature;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	MosaicDefinition mosaic_definition() {
+	MosaicDefinition mosaic_definition()@property
+	 {
 		return self._mosaic_definition;
 	}
 
-	Address rental_fee_sink() {
+	Address rental_fee_sink()@property
+	 {
 		return self._rental_fee_sink;
 	}
 
-	Amount rental_fee() {
+	Amount rental_fee()@property
+	 {
 		return self._rental_fee;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void signature(value: Signature) {
+	void signature(value: Signature)@signature.setter
+	 {
 		self._signature = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void mosaic_definition(value: MosaicDefinition) {
+	void mosaic_definition(value: MosaicDefinition)@mosaic_definition.setter
+	 {
 		self._mosaic_definition = value;
 	}
 
-	void rental_fee_sink(value: Address) {
+	void rental_fee_sink(value: Address)@rental_fee_sink.setter
+	 {
 		self._rental_fee_sink = value;
 	}
 
-	void rental_fee(value: Amount) {
+	void rental_fee(value: Amount)@rental_fee.setter
+	 {
 		self._rental_fee = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -1976,7 +2103,7 @@ class MosaicDefinitionTransactionV1 : public Transaction {
 		return size;
 	}
 
-	MosaicDefinitionTransactionV1 deserialize(const std::vector<uint8_t>& buffer) {
+	MosaicDefinitionTransactionV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = MosaicDefinitionTransactionV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -2088,24 +2215,24 @@ class MosaicDefinitionTransactionV1 : public Transaction {
 };
 
 
-class NonVerifiableMosaicDefinitionTransactionV1 : public NonVerifiableTransaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.MOSAIC_DEFINITION;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'mosaic_definition': 'struct:MosaicDefinition',
-			'rental_fee_sink': 'pod:Address',
-			'rental_fee': 'pod:Amount'
-		}
-		;
+class NonVerifiableMosaicDefinitionTransactionV1 : public (NonVerifiableTransaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.MOSAIC_DEFINITION;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'mosaic_definition': 'struct:MosaicDefinition',
+		'rental_fee_sink': 'pod:Address',
+		'rental_fee': 'pod:Amount'
+	}
+	;
 
-	void NonVerifiableMosaicDefinitionTransactionV1() {
+	 NonVerifiableMosaicDefinitionTransactionV1() {
 		self._type_ = NonVerifiableMosaicDefinitionTransactionV1.TRANSACTION_TYPE;
 		self._version = NonVerifiableMosaicDefinitionTransactionV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -2125,87 +2252,107 @@ class NonVerifiableMosaicDefinitionTransactionV1 : public NonVerifiableTransacti
 		self._mosaic_definition.sort();
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	MosaicDefinition mosaic_definition() {
+	MosaicDefinition mosaic_definition()@property
+	 {
 		return self._mosaic_definition;
 	}
 
-	Address rental_fee_sink() {
+	Address rental_fee_sink()@property
+	 {
 		return self._rental_fee_sink;
 	}
 
-	Amount rental_fee() {
+	Amount rental_fee()@property
+	 {
 		return self._rental_fee;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void mosaic_definition(value: MosaicDefinition) {
+	void mosaic_definition(value: MosaicDefinition)@mosaic_definition.setter
+	 {
 		self._mosaic_definition = value;
 	}
 
-	void rental_fee_sink(value: Address) {
+	void rental_fee_sink(value: Address)@rental_fee_sink.setter
+	 {
 		self._rental_fee_sink = value;
 	}
 
-	void rental_fee(value: Amount) {
+	void rental_fee(value: Amount)@rental_fee.setter
+	 {
 		self._rental_fee = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -2224,7 +2371,7 @@ class NonVerifiableMosaicDefinitionTransactionV1 : public NonVerifiableTransacti
 		return size;
 	}
 
-	NonVerifiableMosaicDefinitionTransactionV1 deserialize(const std::vector<uint8_t>& buffer) {
+	NonVerifiableMosaicDefinitionTransactionV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = NonVerifiableMosaicDefinitionTransactionV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -2326,18 +2473,18 @@ class NonVerifiableMosaicDefinitionTransactionV1 : public NonVerifiableTransacti
 };
 
 
-class MosaicSupplyChangeAction : public Enum {
-	public:
-		INCREASE = 1
-		;
-		DECREASE = 2
-		;
+class MosaicSupplyChangeAction : public (Enum) {
+public:
+	INCREASE = 1
+	;
+	DECREASE = 2
+	;
 
-	size_t size() {
+	int get_size() {
 		return 4;
 	}
 
-	MosaicSupplyChangeAction deserialize(const std::vector<uint8_t>& buffer) {
+	MosaicSupplyChangeAction deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		return MosaicSupplyChangeAction(int.from_bytes(buffer[:4], byteorder='little', signed=False));
 	}
@@ -2354,25 +2501,25 @@ class MosaicSupplyChangeAction : public Enum {
 };
 
 
-class MosaicSupplyChangeTransactionV1 : public Transaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.MOSAIC_SUPPLY_CHANGE;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'signature': 'pod:Signature',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'mosaic_id': 'struct:MosaicId',
-			'action': 'enum:MosaicSupplyChangeAction',
-			'delta': 'pod:Amount'
-		}
-		;
+class MosaicSupplyChangeTransactionV1 : public (Transaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.MOSAIC_SUPPLY_CHANGE;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'signature': 'pod:Signature',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'mosaic_id': 'struct:MosaicId',
+		'action': 'enum:MosaicSupplyChangeAction',
+		'delta': 'pod:Amount'
+	}
+	;
 
-	void MosaicSupplyChangeTransactionV1() {
+	 MosaicSupplyChangeTransactionV1() {
 		self._type_ = MosaicSupplyChangeTransactionV1.TRANSACTION_TYPE;
 		self._version = MosaicSupplyChangeTransactionV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -2393,95 +2540,117 @@ class MosaicSupplyChangeTransactionV1 : public Transaction {
 		self._mosaic_id.sort();
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Signature signature() {
+	Signature signature()@property
+	 {
 		return self._signature;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	MosaicId mosaic_id() {
+	MosaicId mosaic_id()@property
+	 {
 		return self._mosaic_id;
 	}
 
-	MosaicSupplyChangeAction action() {
+	MosaicSupplyChangeAction action()@property
+	 {
 		return self._action;
 	}
 
-	Amount delta() {
+	Amount delta()@property
+	 {
 		return self._delta;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void signature(value: Signature) {
+	void signature(value: Signature)@signature.setter
+	 {
 		self._signature = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void mosaic_id(value: MosaicId) {
+	void mosaic_id(value: MosaicId)@mosaic_id.setter
+	 {
 		self._mosaic_id = value;
 	}
 
-	void action(value: MosaicSupplyChangeAction) {
+	void action(value: MosaicSupplyChangeAction)@action.setter
+	 {
 		self._action = value;
 	}
 
-	void delta(value: Amount) {
+	void delta(value: Amount)@delta.setter
+	 {
 		self._delta = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -2501,7 +2670,7 @@ class MosaicSupplyChangeTransactionV1 : public Transaction {
 		return size;
 	}
 
-	MosaicSupplyChangeTransactionV1 deserialize(const std::vector<uint8_t>& buffer) {
+	MosaicSupplyChangeTransactionV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = MosaicSupplyChangeTransactionV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -2609,24 +2778,24 @@ class MosaicSupplyChangeTransactionV1 : public Transaction {
 };
 
 
-class NonVerifiableMosaicSupplyChangeTransactionV1 : public NonVerifiableTransaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.MOSAIC_SUPPLY_CHANGE;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'mosaic_id': 'struct:MosaicId',
-			'action': 'enum:MosaicSupplyChangeAction',
-			'delta': 'pod:Amount'
-		}
-		;
+class NonVerifiableMosaicSupplyChangeTransactionV1 : public (NonVerifiableTransaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.MOSAIC_SUPPLY_CHANGE;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'mosaic_id': 'struct:MosaicId',
+		'action': 'enum:MosaicSupplyChangeAction',
+		'delta': 'pod:Amount'
+	}
+	;
 
-	void NonVerifiableMosaicSupplyChangeTransactionV1() {
+	 NonVerifiableMosaicSupplyChangeTransactionV1() {
 		self._type_ = NonVerifiableMosaicSupplyChangeTransactionV1.TRANSACTION_TYPE;
 		self._version = NonVerifiableMosaicSupplyChangeTransactionV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -2645,87 +2814,107 @@ class NonVerifiableMosaicSupplyChangeTransactionV1 : public NonVerifiableTransac
 		self._mosaic_id.sort();
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	MosaicId mosaic_id() {
+	MosaicId mosaic_id()@property
+	 {
 		return self._mosaic_id;
 	}
 
-	MosaicSupplyChangeAction action() {
+	MosaicSupplyChangeAction action()@property
+	 {
 		return self._action;
 	}
 
-	Amount delta() {
+	Amount delta()@property
+	 {
 		return self._delta;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void mosaic_id(value: MosaicId) {
+	void mosaic_id(value: MosaicId)@mosaic_id.setter
+	 {
 		self._mosaic_id = value;
 	}
 
-	void action(value: MosaicSupplyChangeAction) {
+	void action(value: MosaicSupplyChangeAction)@action.setter
+	 {
 		self._action = value;
 	}
 
-	void delta(value: Amount) {
+	void delta(value: Amount)@delta.setter
+	 {
 		self._delta = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -2743,7 +2932,7 @@ class NonVerifiableMosaicSupplyChangeTransactionV1 : public NonVerifiableTransac
 		return size;
 	}
 
-	NonVerifiableMosaicSupplyChangeTransactionV1 deserialize(const std::vector<uint8_t>& buffer) {
+	NonVerifiableMosaicSupplyChangeTransactionV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = NonVerifiableMosaicSupplyChangeTransactionV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -2841,18 +3030,18 @@ class NonVerifiableMosaicSupplyChangeTransactionV1 : public NonVerifiableTransac
 };
 
 
-class MultisigAccountModificationType : public Enum {
-	public:
-		ADD_COSIGNATORY = 1
-		;
-		DELETE_COSIGNATORY = 2
-		;
+class MultisigAccountModificationType : public (Enum) {
+public:
+	ADD_COSIGNATORY = 1
+	;
+	DELETE_COSIGNATORY = 2
+	;
 
-	size_t size() {
+	int get_size() {
 		return 4;
 	}
 
-	MultisigAccountModificationType deserialize(const std::vector<uint8_t>& buffer) {
+	MultisigAccountModificationType deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		return MultisigAccountModificationType(int.from_bytes(buffer[:4], byteorder='little', signed=False));
 	}
@@ -2870,20 +3059,20 @@ class MultisigAccountModificationType : public Enum {
 
 
 class MultisigAccountModification {
-	public:
-		TYPE_HINTS = {
-			'modification_type': 'enum:MultisigAccountModificationType',
-			'cosignatory_public_key': 'pod:PublicKey'
-		}
-		;
+public:
+	TYPE_HINTS = {
+		'modification_type': 'enum:MultisigAccountModificationType',
+		'cosignatory_public_key': 'pod:PublicKey'
+	}
+	;
 
-	void MultisigAccountModification() {
+	 MultisigAccountModification() {
 		self._modification_type = MultisigAccountModificationType.ADD_COSIGNATORY;
 		self._cosignatory_public_key = PublicKey();
 		self._cosignatory_public_key_size = 32  # reserved field;
 	}
 
-	void comparer() {
+	tuple comparer() {
 		from ..Transforms import ripemd_keccak_256  # pylint: disable=import-outside-toplevel;
 
 		return (;
@@ -2896,23 +3085,27 @@ class MultisigAccountModification {
 		pass;
 	}
 
-	MultisigAccountModificationType modification_type() {
+	MultisigAccountModificationType modification_type()@property
+	 {
 		return self._modification_type;
 	}
 
-	PublicKey cosignatory_public_key() {
+	PublicKey cosignatory_public_key()@property
+	 {
 		return self._cosignatory_public_key;
 	}
 
-	void modification_type(value: MultisigAccountModificationType) {
+	void modification_type(value: MultisigAccountModificationType)@modification_type.setter
+	 {
 		self._modification_type = value;
 	}
 
-	void cosignatory_public_key(value: PublicKey) {
+	void cosignatory_public_key(value: PublicKey)@cosignatory_public_key.setter
+	 {
 		self._cosignatory_public_key = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.modification_type.size;
 		size += 4;
@@ -2920,7 +3113,7 @@ class MultisigAccountModification {
 		return size;
 	}
 
-	MultisigAccountModification deserialize(const std::vector<uint8_t>& buffer) {
+	MultisigAccountModification deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = MultisigAccountModification();
 		modification_type = MultisigAccountModificationType.deserialize(buffer);
@@ -2963,13 +3156,13 @@ class MultisigAccountModification {
 
 
 class SizePrefixedMultisigAccountModification {
-	public:
-		TYPE_HINTS = {
-			'modification': 'struct:MultisigAccountModification'
-		}
-		;
+public:
+	TYPE_HINTS = {
+		'modification': 'struct:MultisigAccountModification'
+	}
+	;
 
-	void SizePrefixedMultisigAccountModification() {
+	 SizePrefixedMultisigAccountModification() {
 		self._modification = MultisigAccountModification();
 	}
 
@@ -2977,22 +3170,24 @@ class SizePrefixedMultisigAccountModification {
 		self._modification.sort();
 	}
 
-	MultisigAccountModification modification() {
+	MultisigAccountModification modification()@property
+	 {
 		return self._modification;
 	}
 
-	void modification(value: MultisigAccountModification) {
+	void modification(value: MultisigAccountModification)@modification.setter
+	 {
 		self._modification = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += 4;
 		size += self.modification.size;
 		return size;
 	}
 
-	SizePrefixedMultisigAccountModification deserialize(const std::vector<uint8_t>& buffer) {
+	SizePrefixedMultisigAccountModification deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = SizePrefixedMultisigAccountModification();
 		modification_size = int.from_bytes(buffer[:4], byteorder='little', signed=False);
@@ -3028,23 +3223,23 @@ class SizePrefixedMultisigAccountModification {
 };
 
 
-class MultisigAccountModificationTransactionV1 : public Transaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG_ACCOUNT_MODIFICATION;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'signature': 'pod:Signature',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'modifications': 'array[SizePrefixedMultisigAccountModification]'
-		}
-		;
+class MultisigAccountModificationTransactionV1 : public (Transaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG_ACCOUNT_MODIFICATION;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'signature': 'pod:Signature',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'modifications': 'array[SizePrefixedMultisigAccountModification]'
+	}
+	;
 
-	void MultisigAccountModificationTransactionV1() {
+	 MultisigAccountModificationTransactionV1() {
 		self._type_ = MultisigAccountModificationTransactionV1.TRANSACTION_TYPE;
 		self._version = MultisigAccountModificationTransactionV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -3063,79 +3258,97 @@ class MultisigAccountModificationTransactionV1 : public Transaction {
 		self._modifications = sorted(self._modifications, key=lambda e: e.modification.comparer() if hasattr(e.modification, 'comparer') else e.modification);
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Signature signature() {
+	Signature signature()@property
+	 {
 		return self._signature;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	List[SizePrefixedMultisigAccountModification] modifications() {
+	List[SizePrefixedMultisigAccountModification] modifications()@property
+	 {
 		return self._modifications;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void signature(value: Signature) {
+	void signature(value: Signature)@signature.setter
+	 {
 		self._signature = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void modifications(value: List[SizePrefixedMultisigAccountModification]) {
+	void modifications(value: List[SizePrefixedMultisigAccountModification])@modifications.setter
+	 {
 		self._modifications = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -3153,7 +3366,7 @@ class MultisigAccountModificationTransactionV1 : public Transaction {
 		return size;
 	}
 
-	MultisigAccountModificationTransactionV1 deserialize(const std::vector<uint8_t>& buffer) {
+	MultisigAccountModificationTransactionV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = MultisigAccountModificationTransactionV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -3248,22 +3461,22 @@ class MultisigAccountModificationTransactionV1 : public Transaction {
 };
 
 
-class NonVerifiableMultisigAccountModificationTransactionV1 : public NonVerifiableTransaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG_ACCOUNT_MODIFICATION;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'modifications': 'array[SizePrefixedMultisigAccountModification]'
-		}
-		;
+class NonVerifiableMultisigAccountModificationTransactionV1 : public (NonVerifiableTransaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG_ACCOUNT_MODIFICATION;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'modifications': 'array[SizePrefixedMultisigAccountModification]'
+	}
+	;
 
-	void NonVerifiableMultisigAccountModificationTransactionV1() {
+	 NonVerifiableMultisigAccountModificationTransactionV1() {
 		self._type_ = NonVerifiableMultisigAccountModificationTransactionV1.TRANSACTION_TYPE;
 		self._version = NonVerifiableMultisigAccountModificationTransactionV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -3280,71 +3493,87 @@ class NonVerifiableMultisigAccountModificationTransactionV1 : public NonVerifiab
 		self._modifications = sorted(self._modifications, key=lambda e: e.modification.comparer() if hasattr(e.modification, 'comparer') else e.modification);
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	List[SizePrefixedMultisigAccountModification] modifications() {
+	List[SizePrefixedMultisigAccountModification] modifications()@property
+	 {
 		return self._modifications;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void modifications(value: List[SizePrefixedMultisigAccountModification]) {
+	void modifications(value: List[SizePrefixedMultisigAccountModification])@modifications.setter
+	 {
 		self._modifications = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -3360,7 +3589,7 @@ class NonVerifiableMultisigAccountModificationTransactionV1 : public NonVerifiab
 		return size;
 	}
 
-	NonVerifiableMultisigAccountModificationTransactionV1 deserialize(const std::vector<uint8_t>& buffer) {
+	NonVerifiableMultisigAccountModificationTransactionV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = NonVerifiableMultisigAccountModificationTransactionV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -3445,23 +3674,23 @@ class NonVerifiableMultisigAccountModificationTransactionV1 : public NonVerifiab
 };
 
 
-class MultisigAccountModificationTransactionV2 : public Transaction {
-	public:
-		TRANSACTION_VERSION: int = 2;
-		TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG_ACCOUNT_MODIFICATION;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'signature': 'pod:Signature',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'modifications': 'array[SizePrefixedMultisigAccountModification]'
-		}
-		;
+class MultisigAccountModificationTransactionV2 : public (Transaction) {
+public:
+	TRANSACTION_VERSION: int = 2;
+	TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG_ACCOUNT_MODIFICATION;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'signature': 'pod:Signature',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'modifications': 'array[SizePrefixedMultisigAccountModification]'
+	}
+	;
 
-	void MultisigAccountModificationTransactionV2() {
+	 MultisigAccountModificationTransactionV2() {
 		self._type_ = MultisigAccountModificationTransactionV2.TRANSACTION_TYPE;
 		self._version = MultisigAccountModificationTransactionV2.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -3482,87 +3711,107 @@ class MultisigAccountModificationTransactionV2 : public Transaction {
 		self._modifications = sorted(self._modifications, key=lambda e: e.modification.comparer() if hasattr(e.modification, 'comparer') else e.modification);
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Signature signature() {
+	Signature signature()@property
+	 {
 		return self._signature;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	List[SizePrefixedMultisigAccountModification] modifications() {
+	List[SizePrefixedMultisigAccountModification] modifications()@property
+	 {
 		return self._modifications;
 	}
 
-	int min_approval_delta() {
+	int min_approval_delta()@property
+	 {
 		return self._min_approval_delta;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void signature(value: Signature) {
+	void signature(value: Signature)@signature.setter
+	 {
 		self._signature = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void modifications(value: List[SizePrefixedMultisigAccountModification]) {
+	void modifications(value: List[SizePrefixedMultisigAccountModification])@modifications.setter
+	 {
 		self._modifications = value;
 	}
 
-	void min_approval_delta(value: int) {
+	void min_approval_delta(value: int)@min_approval_delta.setter
+	 {
 		self._min_approval_delta = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -3582,7 +3831,7 @@ class MultisigAccountModificationTransactionV2 : public Transaction {
 		return size;
 	}
 
-	MultisigAccountModificationTransactionV2 deserialize(const std::vector<uint8_t>& buffer) {
+	MultisigAccountModificationTransactionV2 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = MultisigAccountModificationTransactionV2();
 		type_ = TransactionType.deserialize(buffer);
@@ -3687,22 +3936,22 @@ class MultisigAccountModificationTransactionV2 : public Transaction {
 };
 
 
-class NonVerifiableMultisigAccountModificationTransactionV2 : public NonVerifiableTransaction {
-	public:
-		TRANSACTION_VERSION: int = 2;
-		TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG_ACCOUNT_MODIFICATION;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'modifications': 'array[SizePrefixedMultisigAccountModification]'
-		}
-		;
+class NonVerifiableMultisigAccountModificationTransactionV2 : public (NonVerifiableTransaction) {
+public:
+	TRANSACTION_VERSION: int = 2;
+	TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG_ACCOUNT_MODIFICATION;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'modifications': 'array[SizePrefixedMultisigAccountModification]'
+	}
+	;
 
-	void NonVerifiableMultisigAccountModificationTransactionV2() {
+	 NonVerifiableMultisigAccountModificationTransactionV2() {
 		self._type_ = NonVerifiableMultisigAccountModificationTransactionV2.TRANSACTION_TYPE;
 		self._version = NonVerifiableMultisigAccountModificationTransactionV2.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -3721,79 +3970,97 @@ class NonVerifiableMultisigAccountModificationTransactionV2 : public NonVerifiab
 		self._modifications = sorted(self._modifications, key=lambda e: e.modification.comparer() if hasattr(e.modification, 'comparer') else e.modification);
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	List[SizePrefixedMultisigAccountModification] modifications() {
+	List[SizePrefixedMultisigAccountModification] modifications()@property
+	 {
 		return self._modifications;
 	}
 
-	int min_approval_delta() {
+	int min_approval_delta()@property
+	 {
 		return self._min_approval_delta;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void modifications(value: List[SizePrefixedMultisigAccountModification]) {
+	void modifications(value: List[SizePrefixedMultisigAccountModification])@modifications.setter
+	 {
 		self._modifications = value;
 	}
 
-	void min_approval_delta(value: int) {
+	void min_approval_delta(value: int)@min_approval_delta.setter
+	 {
 		self._min_approval_delta = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -3811,7 +4078,7 @@ class NonVerifiableMultisigAccountModificationTransactionV2 : public NonVerifiab
 		return size;
 	}
 
-	NonVerifiableMultisigAccountModificationTransactionV2 deserialize(const std::vector<uint8_t>& buffer) {
+	NonVerifiableMultisigAccountModificationTransactionV2 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = NonVerifiableMultisigAccountModificationTransactionV2();
 		type_ = TransactionType.deserialize(buffer);
@@ -3907,16 +4174,16 @@ class NonVerifiableMultisigAccountModificationTransactionV2 : public NonVerifiab
 
 
 class CosignatureV1Body {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG_COSIGNATURE;
-		TYPE_HINTS = {
-			'other_transaction_hash': 'pod:Hash256',
-			'multisig_account_address': 'pod:Address'
-		}
-		;
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG_COSIGNATURE;
+	TYPE_HINTS = {
+		'other_transaction_hash': 'pod:Hash256',
+		'multisig_account_address': 'pod:Address'
+	}
+	;
 
-	void CosignatureV1Body() {
+	 CosignatureV1Body() {
 		self._other_transaction_hash = Hash256();
 		self._multisig_account_address = Address();
 		self._other_transaction_hash_outer_size = 36  # reserved field;
@@ -3928,23 +4195,27 @@ class CosignatureV1Body {
 		pass;
 	}
 
-	Hash256 other_transaction_hash() {
+	Hash256 other_transaction_hash()@property
+	 {
 		return self._other_transaction_hash;
 	}
 
-	Address multisig_account_address() {
+	Address multisig_account_address()@property
+	 {
 		return self._multisig_account_address;
 	}
 
-	void other_transaction_hash(value: Hash256) {
+	void other_transaction_hash(value: Hash256)@other_transaction_hash.setter
+	 {
 		self._other_transaction_hash = value;
 	}
 
-	void multisig_account_address(value: Address) {
+	void multisig_account_address(value: Address)@multisig_account_address.setter
+	 {
 		self._multisig_account_address = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += 4;
 		size += 4;
@@ -3954,7 +4225,7 @@ class CosignatureV1Body {
 		return size;
 	}
 
-	CosignatureV1Body deserialize(const std::vector<uint8_t>& buffer) {
+	CosignatureV1Body deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = CosignatureV1Body();
 		other_transaction_hash_outer_size = int.from_bytes(buffer[:4], byteorder='little', signed=False);
@@ -4004,24 +4275,24 @@ class CosignatureV1Body {
 };
 
 
-class CosignatureV1 : public Transaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG_COSIGNATURE;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'signature': 'pod:Signature',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'other_transaction_hash': 'pod:Hash256',
-			'multisig_account_address': 'pod:Address'
-		}
-		;
+class CosignatureV1 : public (Transaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG_COSIGNATURE;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'signature': 'pod:Signature',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'other_transaction_hash': 'pod:Hash256',
+		'multisig_account_address': 'pod:Address'
+	}
+	;
 
-	void CosignatureV1() {
+	 CosignatureV1() {
 		self._type_ = CosignatureV1.TRANSACTION_TYPE;
 		self._version = CosignatureV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -4044,87 +4315,107 @@ class CosignatureV1 : public Transaction {
 		pass;
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Signature signature() {
+	Signature signature()@property
+	 {
 		return self._signature;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	Hash256 other_transaction_hash() {
+	Hash256 other_transaction_hash()@property
+	 {
 		return self._other_transaction_hash;
 	}
 
-	Address multisig_account_address() {
+	Address multisig_account_address()@property
+	 {
 		return self._multisig_account_address;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void signature(value: Signature) {
+	void signature(value: Signature)@signature.setter
+	 {
 		self._signature = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void other_transaction_hash(value: Hash256) {
+	void other_transaction_hash(value: Hash256)@other_transaction_hash.setter
+	 {
 		self._other_transaction_hash = value;
 	}
 
-	void multisig_account_address(value: Address) {
+	void multisig_account_address(value: Address)@multisig_account_address.setter
+	 {
 		self._multisig_account_address = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -4145,7 +4436,7 @@ class CosignatureV1 : public Transaction {
 		return size;
 	}
 
-	CosignatureV1 deserialize(const std::vector<uint8_t>& buffer) {
+	CosignatureV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = CosignatureV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -4255,23 +4546,23 @@ class CosignatureV1 : public Transaction {
 };
 
 
-class NonVerifiableCosignatureV1 : public NonVerifiableTransaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG_COSIGNATURE;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'other_transaction_hash': 'pod:Hash256',
-			'multisig_account_address': 'pod:Address'
-		}
-		;
+class NonVerifiableCosignatureV1 : public (NonVerifiableTransaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG_COSIGNATURE;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'other_transaction_hash': 'pod:Hash256',
+		'multisig_account_address': 'pod:Address'
+	}
+	;
 
-	void NonVerifiableCosignatureV1() {
+	 NonVerifiableCosignatureV1() {
 		self._type_ = NonVerifiableCosignatureV1.TRANSACTION_TYPE;
 		self._version = NonVerifiableCosignatureV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -4292,79 +4583,97 @@ class NonVerifiableCosignatureV1 : public NonVerifiableTransaction {
 		pass;
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	Hash256 other_transaction_hash() {
+	Hash256 other_transaction_hash()@property
+	 {
 		return self._other_transaction_hash;
 	}
 
-	Address multisig_account_address() {
+	Address multisig_account_address()@property
+	 {
 		return self._multisig_account_address;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void other_transaction_hash(value: Hash256) {
+	void other_transaction_hash(value: Hash256)@other_transaction_hash.setter
+	 {
 		self._other_transaction_hash = value;
 	}
 
-	void multisig_account_address(value: Address) {
+	void multisig_account_address(value: Address)@multisig_account_address.setter
+	 {
 		self._multisig_account_address = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -4383,7 +4692,7 @@ class NonVerifiableCosignatureV1 : public NonVerifiableTransaction {
 		return size;
 	}
 
-	NonVerifiableCosignatureV1 deserialize(const std::vector<uint8_t>& buffer) {
+	NonVerifiableCosignatureV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = NonVerifiableCosignatureV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -4484,13 +4793,13 @@ class NonVerifiableCosignatureV1 : public NonVerifiableTransaction {
 
 
 class SizePrefixedCosignatureV1 {
-	public:
-		TYPE_HINTS = {
-			'cosignature': 'struct:CosignatureV1'
-		}
-		;
+public:
+	TYPE_HINTS = {
+		'cosignature': 'struct:CosignatureV1'
+	}
+	;
 
-	void SizePrefixedCosignatureV1() {
+	 SizePrefixedCosignatureV1() {
 		self._cosignature = CosignatureV1();
 	}
 
@@ -4498,22 +4807,24 @@ class SizePrefixedCosignatureV1 {
 		self._cosignature.sort();
 	}
 
-	CosignatureV1 cosignature() {
+	CosignatureV1 cosignature()@property
+	 {
 		return self._cosignature;
 	}
 
-	void cosignature(value: CosignatureV1) {
+	void cosignature(value: CosignatureV1)@cosignature.setter
+	 {
 		self._cosignature = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += 4;
 		size += self.cosignature.size;
 		return size;
 	}
 
-	SizePrefixedCosignatureV1 deserialize(const std::vector<uint8_t>& buffer) {
+	SizePrefixedCosignatureV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = SizePrefixedCosignatureV1();
 		cosignature_size = int.from_bytes(buffer[:4], byteorder='little', signed=False);
@@ -4549,24 +4860,24 @@ class SizePrefixedCosignatureV1 {
 };
 
 
-class MultisigTransactionV1 : public Transaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'signature': 'pod:Signature',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'inner_transaction': 'struct:NonVerifiableTransaction',
-			'cosignatures': 'array[SizePrefixedCosignatureV1]'
-		}
-		;
+class MultisigTransactionV1 : public (Transaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'signature': 'pod:Signature',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'inner_transaction': 'struct:NonVerifiableTransaction',
+		'cosignatures': 'array[SizePrefixedCosignatureV1]'
+	}
+	;
 
-	void MultisigTransactionV1() {
+	 MultisigTransactionV1() {
 		self._type_ = MultisigTransactionV1.TRANSACTION_TYPE;
 		self._version = MultisigTransactionV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -4586,87 +4897,107 @@ class MultisigTransactionV1 : public Transaction {
 		self._inner_transaction.sort();
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Signature signature() {
+	Signature signature()@property
+	 {
 		return self._signature;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	NonVerifiableTransaction inner_transaction() {
+	NonVerifiableTransaction inner_transaction()@property
+	 {
 		return self._inner_transaction;
 	}
 
-	List[SizePrefixedCosignatureV1] cosignatures() {
+	List[SizePrefixedCosignatureV1] cosignatures()@property
+	 {
 		return self._cosignatures;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void signature(value: Signature) {
+	void signature(value: Signature)@signature.setter
+	 {
 		self._signature = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void inner_transaction(value: NonVerifiableTransaction) {
+	void inner_transaction(value: NonVerifiableTransaction)@inner_transaction.setter
+	 {
 		self._inner_transaction = value;
 	}
 
-	void cosignatures(value: List[SizePrefixedCosignatureV1]) {
+	void cosignatures(value: List[SizePrefixedCosignatureV1])@cosignatures.setter
+	 {
 		self._cosignatures = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -4686,7 +5017,7 @@ class MultisigTransactionV1 : public Transaction {
 		return size;
 	}
 
-	MultisigTransactionV1 deserialize(const std::vector<uint8_t>& buffer) {
+	MultisigTransactionV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = MultisigTransactionV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -4791,22 +5122,22 @@ class MultisigTransactionV1 : public Transaction {
 };
 
 
-class NonVerifiableMultisigTransactionV1 : public NonVerifiableTransaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'inner_transaction': 'struct:NonVerifiableTransaction'
-		}
-		;
+class NonVerifiableMultisigTransactionV1 : public (NonVerifiableTransaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.MULTISIG;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'inner_transaction': 'struct:NonVerifiableTransaction'
+	}
+	;
 
-	void NonVerifiableMultisigTransactionV1() {
+	 NonVerifiableMultisigTransactionV1() {
 		self._type_ = NonVerifiableMultisigTransactionV1.TRANSACTION_TYPE;
 		self._version = NonVerifiableMultisigTransactionV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -4823,71 +5154,87 @@ class NonVerifiableMultisigTransactionV1 : public NonVerifiableTransaction {
 		self._inner_transaction.sort();
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	NonVerifiableTransaction inner_transaction() {
+	NonVerifiableTransaction inner_transaction()@property
+	 {
 		return self._inner_transaction;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void inner_transaction(value: NonVerifiableTransaction) {
+	void inner_transaction(value: NonVerifiableTransaction)@inner_transaction.setter
+	 {
 		self._inner_transaction = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -4903,7 +5250,7 @@ class NonVerifiableMultisigTransactionV1 : public NonVerifiableTransaction {
 		return size;
 	}
 
-	NonVerifiableMultisigTransactionV1 deserialize(const std::vector<uint8_t>& buffer) {
+	NonVerifiableMultisigTransactionV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = NonVerifiableMultisigTransactionV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -4989,26 +5336,26 @@ class NonVerifiableMultisigTransactionV1 : public NonVerifiableTransaction {
 };
 
 
-class NamespaceRegistrationTransactionV1 : public Transaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.NAMESPACE_REGISTRATION;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'signature': 'pod:Signature',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'rental_fee_sink': 'pod:Address',
-			'rental_fee': 'pod:Amount',
-			'name': 'bytes_array',
-			'parent_name': 'bytes_array'
-		}
-		;
+class NamespaceRegistrationTransactionV1 : public (Transaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.NAMESPACE_REGISTRATION;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'signature': 'pod:Signature',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'rental_fee_sink': 'pod:Address',
+		'rental_fee': 'pod:Amount',
+		'name': 'bytes_array',
+		'parent_name': 'bytes_array'
+	}
+	;
 
-	void NamespaceRegistrationTransactionV1() {
+	 NamespaceRegistrationTransactionV1() {
 		self._type_ = NamespaceRegistrationTransactionV1.TRANSACTION_TYPE;
 		self._version = NamespaceRegistrationTransactionV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -5031,103 +5378,127 @@ class NamespaceRegistrationTransactionV1 : public Transaction {
 		pass;
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Signature signature() {
+	Signature signature()@property
+	 {
 		return self._signature;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	Address rental_fee_sink() {
+	Address rental_fee_sink()@property
+	 {
 		return self._rental_fee_sink;
 	}
 
-	Amount rental_fee() {
+	Amount rental_fee()@property
+	 {
 		return self._rental_fee;
 	}
 
-	bytes name() {
+	bytes name()@property
+	 {
 		return self._name;
 	}
 
-	bytes parent_name() {
+	bytes parent_name()@property
+	 {
 		return self._parent_name;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void signature(value: Signature) {
+	void signature(value: Signature)@signature.setter
+	 {
 		self._signature = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void rental_fee_sink(value: Address) {
+	void rental_fee_sink(value: Address)@rental_fee_sink.setter
+	 {
 		self._rental_fee_sink = value;
 	}
 
-	void rental_fee(value: Amount) {
+	void rental_fee(value: Amount)@rental_fee.setter
+	 {
 		self._rental_fee = value;
 	}
 
-	void name(value: bytes) {
+	void name(value: bytes)@name.setter
+	 {
 		self._name = value;
 	}
 
-	void parent_name(value: bytes) {
+	void parent_name(value: bytes)@parent_name.setter
+	 {
 		self._parent_name = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -5151,7 +5522,7 @@ class NamespaceRegistrationTransactionV1 : public Transaction {
 		return size;
 	}
 
-	NamespaceRegistrationTransactionV1 deserialize(const std::vector<uint8_t>& buffer) {
+	NamespaceRegistrationTransactionV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = NamespaceRegistrationTransactionV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -5276,25 +5647,25 @@ class NamespaceRegistrationTransactionV1 : public Transaction {
 };
 
 
-class NonVerifiableNamespaceRegistrationTransactionV1 : public NonVerifiableTransaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.NAMESPACE_REGISTRATION;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'rental_fee_sink': 'pod:Address',
-			'rental_fee': 'pod:Amount',
-			'name': 'bytes_array',
-			'parent_name': 'bytes_array'
-		}
-		;
+class NonVerifiableNamespaceRegistrationTransactionV1 : public (NonVerifiableTransaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.NAMESPACE_REGISTRATION;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'rental_fee_sink': 'pod:Address',
+		'rental_fee': 'pod:Amount',
+		'name': 'bytes_array',
+		'parent_name': 'bytes_array'
+	}
+	;
 
-	void NonVerifiableNamespaceRegistrationTransactionV1() {
+	 NonVerifiableNamespaceRegistrationTransactionV1() {
 		self._type_ = NonVerifiableNamespaceRegistrationTransactionV1.TRANSACTION_TYPE;
 		self._version = NonVerifiableNamespaceRegistrationTransactionV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -5315,95 +5686,117 @@ class NonVerifiableNamespaceRegistrationTransactionV1 : public NonVerifiableTran
 		pass;
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	Address rental_fee_sink() {
+	Address rental_fee_sink()@property
+	 {
 		return self._rental_fee_sink;
 	}
 
-	Amount rental_fee() {
+	Amount rental_fee()@property
+	 {
 		return self._rental_fee;
 	}
 
-	bytes name() {
+	bytes name()@property
+	 {
 		return self._name;
 	}
 
-	bytes parent_name() {
+	bytes parent_name()@property
+	 {
 		return self._parent_name;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void rental_fee_sink(value: Address) {
+	void rental_fee_sink(value: Address)@rental_fee_sink.setter
+	 {
 		self._rental_fee_sink = value;
 	}
 
-	void rental_fee(value: Amount) {
+	void rental_fee(value: Amount)@rental_fee.setter
+	 {
 		self._rental_fee = value;
 	}
 
-	void name(value: bytes) {
+	void name(value: bytes)@name.setter
+	 {
 		self._name = value;
 	}
 
-	void parent_name(value: bytes) {
+	void parent_name(value: bytes)@parent_name.setter
+	 {
 		self._parent_name = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -5425,7 +5818,7 @@ class NonVerifiableNamespaceRegistrationTransactionV1 : public NonVerifiableTran
 		return size;
 	}
 
-	NonVerifiableNamespaceRegistrationTransactionV1 deserialize(const std::vector<uint8_t>& buffer) {
+	NonVerifiableNamespaceRegistrationTransactionV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = NonVerifiableNamespaceRegistrationTransactionV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -5540,18 +5933,18 @@ class NonVerifiableNamespaceRegistrationTransactionV1 : public NonVerifiableTran
 };
 
 
-class MessageType : public Enum {
-	public:
-		PLAIN = 1
-		;
-		ENCRYPTED = 2
-		;
+class MessageType : public (Enum) {
+public:
+	PLAIN = 1
+	;
+	ENCRYPTED = 2
+	;
 
-	size_t size() {
+	int get_size() {
 		return 4;
 	}
 
-	MessageType deserialize(const std::vector<uint8_t>& buffer) {
+	MessageType deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		return MessageType(int.from_bytes(buffer[:4], byteorder='little', signed=False));
 	}
@@ -5569,14 +5962,14 @@ class MessageType : public Enum {
 
 
 class Message {
-	public:
-		TYPE_HINTS = {
-			'message_type': 'enum:MessageType',
-			'message': 'bytes_array'
-		}
-		;
+public:
+	TYPE_HINTS = {
+		'message_type': 'enum:MessageType',
+		'message': 'bytes_array'
+	}
+	;
 
-	void Message() {
+	 Message() {
 		self._message_type = MessageType.PLAIN;
 		self._message = bytes();
 	}
@@ -5585,23 +5978,27 @@ class Message {
 		pass;
 	}
 
-	MessageType message_type() {
+	MessageType message_type()@property
+	 {
 		return self._message_type;
 	}
 
-	bytes message() {
+	bytes message()@property
+	 {
 		return self._message;
 	}
 
-	void message_type(value: MessageType) {
+	void message_type(value: MessageType)@message_type.setter
+	 {
 		self._message_type = value;
 	}
 
-	void message(value: bytes) {
+	void message(value: bytes)@message.setter
+	 {
 		self._message = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.message_type.size;
 		size += 4;
@@ -5609,7 +6006,7 @@ class Message {
 		return size;
 	}
 
-	Message deserialize(const std::vector<uint8_t>& buffer) {
+	Message deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = Message();
 		message_type = MessageType.deserialize(buffer);
@@ -5650,25 +6047,25 @@ class Message {
 };
 
 
-class TransferTransactionV1 : public Transaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.TRANSFER;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'signature': 'pod:Signature',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'recipient_address': 'pod:Address',
-			'amount': 'pod:Amount',
-			'message': 'struct:Message'
-		}
-		;
+class TransferTransactionV1 : public (Transaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.TRANSFER;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'signature': 'pod:Signature',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'recipient_address': 'pod:Address',
+		'amount': 'pod:Amount',
+		'message': 'struct:Message'
+	}
+	;
 
-	void TransferTransactionV1() {
+	 TransferTransactionV1() {
 		self._type_ = TransferTransactionV1.TRANSACTION_TYPE;
 		self._version = TransferTransactionV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -5691,99 +6088,122 @@ class TransferTransactionV1 : public Transaction {
 			self._message.sort();
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Signature signature() {
+	Signature signature()@property
+	 {
 		return self._signature;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	Address recipient_address() {
+	Address recipient_address()@property
+	 {
 		return self._recipient_address;
 	}
 
-	Amount amount() {
+	Amount amount()@property
+	 {
 		return self._amount;
 	}
 
-	Message message() {
+	Message message()@property
+	 {
 		return self._message;
 	}
 
-	int message_envelope_size_computed() {
+	int message_envelope_size_computed()@property
+	 {
 		return 0 if not self.message else self.message.size + 0;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void signature(value: Signature) {
+	void signature(value: Signature)@signature.setter
+	 {
 		self._signature = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void recipient_address(value: Address) {
+	void recipient_address(value: Address)@recipient_address.setter
+	 {
 		self._recipient_address = value;
 	}
 
-	void amount(value: Amount) {
+	void amount(value: Amount)@amount.setter
+	 {
 		self._amount = value;
 	}
 
-	void message(value: Message) {
+	void message(value: Message)@message.setter
+	 {
 		self._message = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -5805,7 +6225,7 @@ class TransferTransactionV1 : public Transaction {
 		return size;
 	}
 
-	TransferTransactionV1 deserialize(const std::vector<uint8_t>& buffer) {
+	TransferTransactionV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = TransferTransactionV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -5921,24 +6341,24 @@ class TransferTransactionV1 : public Transaction {
 };
 
 
-class NonVerifiableTransferTransactionV1 : public NonVerifiableTransaction {
-	public:
-		TRANSACTION_VERSION: int = 1;
-		TRANSACTION_TYPE: TransactionType = TransactionType.TRANSFER;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'recipient_address': 'pod:Address',
-			'amount': 'pod:Amount',
-			'message': 'struct:Message'
-		}
-		;
+class NonVerifiableTransferTransactionV1 : public (NonVerifiableTransaction) {
+public:
+	TRANSACTION_VERSION: int = 1;
+	TRANSACTION_TYPE: TransactionType = TransactionType.TRANSFER;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'recipient_address': 'pod:Address',
+		'amount': 'pod:Amount',
+		'message': 'struct:Message'
+	}
+	;
 
-	void NonVerifiableTransferTransactionV1() {
+	 NonVerifiableTransferTransactionV1() {
 		self._type_ = NonVerifiableTransferTransactionV1.TRANSACTION_TYPE;
 		self._version = NonVerifiableTransferTransactionV1.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -5959,91 +6379,112 @@ class NonVerifiableTransferTransactionV1 : public NonVerifiableTransaction {
 			self._message.sort();
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	Address recipient_address() {
+	Address recipient_address()@property
+	 {
 		return self._recipient_address;
 	}
 
-	Amount amount() {
+	Amount amount()@property
+	 {
 		return self._amount;
 	}
 
-	Message message() {
+	Message message()@property
+	 {
 		return self._message;
 	}
 
-	int message_envelope_size_computed() {
+	int message_envelope_size_computed()@property
+	 {
 		return 0 if not self.message else self.message.size + 0;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void recipient_address(value: Address) {
+	void recipient_address(value: Address)@recipient_address.setter
+	 {
 		self._recipient_address = value;
 	}
 
-	void amount(value: Amount) {
+	void amount(value: Amount)@amount.setter
+	 {
 		self._amount = value;
 	}
 
-	void message(value: Message) {
+	void message(value: Message)@message.setter
+	 {
 		self._message = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -6063,7 +6504,7 @@ class NonVerifiableTransferTransactionV1 : public NonVerifiableTransaction {
 		return size;
 	}
 
-	NonVerifiableTransferTransactionV1 deserialize(const std::vector<uint8_t>& buffer) {
+	NonVerifiableTransferTransactionV1 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = NonVerifiableTransferTransactionV1();
 		type_ = TransactionType.deserialize(buffer);
@@ -6169,26 +6610,26 @@ class NonVerifiableTransferTransactionV1 : public NonVerifiableTransaction {
 };
 
 
-class TransferTransactionV2 : public Transaction {
-	public:
-		TRANSACTION_VERSION: int = 2;
-		TRANSACTION_TYPE: TransactionType = TransactionType.TRANSFER;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'signature': 'pod:Signature',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'recipient_address': 'pod:Address',
-			'amount': 'pod:Amount',
-			'message': 'struct:Message',
-			'mosaics': 'array[SizePrefixedMosaic]'
-		}
-		;
+class TransferTransactionV2 : public (Transaction) {
+public:
+	TRANSACTION_VERSION: int = 2;
+	TRANSACTION_TYPE: TransactionType = TransactionType.TRANSFER;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'signature': 'pod:Signature',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'recipient_address': 'pod:Address',
+		'amount': 'pod:Amount',
+		'message': 'struct:Message',
+		'mosaics': 'array[SizePrefixedMosaic]'
+	}
+	;
 
-	void TransferTransactionV2() {
+	 TransferTransactionV2() {
 		self._type_ = TransferTransactionV2.TRANSACTION_TYPE;
 		self._version = TransferTransactionV2.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -6212,107 +6653,132 @@ class TransferTransactionV2 : public Transaction {
 			self._message.sort();
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Signature signature() {
+	Signature signature()@property
+	 {
 		return self._signature;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	Address recipient_address() {
+	Address recipient_address()@property
+	 {
 		return self._recipient_address;
 	}
 
-	Amount amount() {
+	Amount amount()@property
+	 {
 		return self._amount;
 	}
 
-	Message message() {
+	Message message()@property
+	 {
 		return self._message;
 	}
 
-	List[SizePrefixedMosaic] mosaics() {
+	List[SizePrefixedMosaic] mosaics()@property
+	 {
 		return self._mosaics;
 	}
 
-	int message_envelope_size_computed() {
+	int message_envelope_size_computed()@property
+	 {
 		return 0 if not self.message else self.message.size + 0;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void signature(value: Signature) {
+	void signature(value: Signature)@signature.setter
+	 {
 		self._signature = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void recipient_address(value: Address) {
+	void recipient_address(value: Address)@recipient_address.setter
+	 {
 		self._recipient_address = value;
 	}
 
-	void amount(value: Amount) {
+	void amount(value: Amount)@amount.setter
+	 {
 		self._amount = value;
 	}
 
-	void message(value: Message) {
+	void message(value: Message)@message.setter
+	 {
 		self._message = value;
 	}
 
-	void mosaics(value: List[SizePrefixedMosaic]) {
+	void mosaics(value: List[SizePrefixedMosaic])@mosaics.setter
+	 {
 		self._mosaics = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -6336,7 +6802,7 @@ class TransferTransactionV2 : public Transaction {
 		return size;
 	}
 
-	TransferTransactionV2 deserialize(const std::vector<uint8_t>& buffer) {
+	TransferTransactionV2 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = TransferTransactionV2();
 		type_ = TransactionType.deserialize(buffer);
@@ -6461,25 +6927,25 @@ class TransferTransactionV2 : public Transaction {
 };
 
 
-class NonVerifiableTransferTransactionV2 : public NonVerifiableTransaction {
-	public:
-		TRANSACTION_VERSION: int = 2;
-		TRANSACTION_TYPE: TransactionType = TransactionType.TRANSFER;
-		TYPE_HINTS = {
-			'type_': 'enum:TransactionType',
-			'network': 'enum:NetworkType',
-			'timestamp': 'pod:Timestamp',
-			'signer_public_key': 'pod:PublicKey',
-			'fee': 'pod:Amount',
-			'deadline': 'pod:Timestamp',
-			'recipient_address': 'pod:Address',
-			'amount': 'pod:Amount',
-			'message': 'struct:Message',
-			'mosaics': 'array[SizePrefixedMosaic]'
-		}
-		;
+class NonVerifiableTransferTransactionV2 : public (NonVerifiableTransaction) {
+public:
+	TRANSACTION_VERSION: int = 2;
+	TRANSACTION_TYPE: TransactionType = TransactionType.TRANSFER;
+	TYPE_HINTS = {
+		'type_': 'enum:TransactionType',
+		'network': 'enum:NetworkType',
+		'timestamp': 'pod:Timestamp',
+		'signer_public_key': 'pod:PublicKey',
+		'fee': 'pod:Amount',
+		'deadline': 'pod:Timestamp',
+		'recipient_address': 'pod:Address',
+		'amount': 'pod:Amount',
+		'message': 'struct:Message',
+		'mosaics': 'array[SizePrefixedMosaic]'
+	}
+	;
 
-	void NonVerifiableTransferTransactionV2() {
+	 NonVerifiableTransferTransactionV2() {
 		self._type_ = NonVerifiableTransferTransactionV2.TRANSACTION_TYPE;
 		self._version = NonVerifiableTransferTransactionV2.TRANSACTION_VERSION;
 		self._network = NetworkType.MAINNET;
@@ -6501,99 +6967,122 @@ class NonVerifiableTransferTransactionV2 : public NonVerifiableTransaction {
 			self._message.sort();
 	}
 
-	TransactionType type_() {
+	TransactionType type_()@property
+	 {
 		return self._type_;
 	}
 
-	int version() {
+	int version()@property
+	 {
 		return self._version;
 	}
 
-	NetworkType network() {
+	NetworkType network()@property
+	 {
 		return self._network;
 	}
 
-	Timestamp timestamp() {
+	Timestamp timestamp()@property
+	 {
 		return self._timestamp;
 	}
 
-	PublicKey signer_public_key() {
+	PublicKey signer_public_key()@property
+	 {
 		return self._signer_public_key;
 	}
 
-	Amount fee() {
+	Amount fee()@property
+	 {
 		return self._fee;
 	}
 
-	Timestamp deadline() {
+	Timestamp deadline()@property
+	 {
 		return self._deadline;
 	}
 
-	Address recipient_address() {
+	Address recipient_address()@property
+	 {
 		return self._recipient_address;
 	}
 
-	Amount amount() {
+	Amount amount()@property
+	 {
 		return self._amount;
 	}
 
-	Message message() {
+	Message message()@property
+	 {
 		return self._message;
 	}
 
-	List[SizePrefixedMosaic] mosaics() {
+	List[SizePrefixedMosaic] mosaics()@property
+	 {
 		return self._mosaics;
 	}
 
-	int message_envelope_size_computed() {
+	int message_envelope_size_computed()@property
+	 {
 		return 0 if not self.message else self.message.size + 0;
 	}
 
-	void type_(value: TransactionType) {
+	void type_(value: TransactionType)@type_.setter
+	 {
 		self._type_ = value;
 	}
 
-	void version(value: int) {
+	void version(value: int)@version.setter
+	 {
 		self._version = value;
 	}
 
-	void network(value: NetworkType) {
+	void network(value: NetworkType)@network.setter
+	 {
 		self._network = value;
 	}
 
-	void timestamp(value: Timestamp) {
+	void timestamp(value: Timestamp)@timestamp.setter
+	 {
 		self._timestamp = value;
 	}
 
-	void signer_public_key(value: PublicKey) {
+	void signer_public_key(value: PublicKey)@signer_public_key.setter
+	 {
 		self._signer_public_key = value;
 	}
 
-	void fee(value: Amount) {
+	void fee(value: Amount)@fee.setter
+	 {
 		self._fee = value;
 	}
 
-	void deadline(value: Timestamp) {
+	void deadline(value: Timestamp)@deadline.setter
+	 {
 		self._deadline = value;
 	}
 
-	void recipient_address(value: Address) {
+	void recipient_address(value: Address)@recipient_address.setter
+	 {
 		self._recipient_address = value;
 	}
 
-	void amount(value: Amount) {
+	void amount(value: Amount)@amount.setter
+	 {
 		self._amount = value;
 	}
 
-	void message(value: Message) {
+	void message(value: Message)@message.setter
+	 {
 		self._message = value;
 	}
 
-	void mosaics(value: List[SizePrefixedMosaic]) {
+	void mosaics(value: List[SizePrefixedMosaic])@mosaics.setter
+	 {
 		self._mosaics = value;
 	}
 
-	size_t size() {
+	int get_size() {
 		size = 0;
 		size += self.type_.size;
 		size += 1;
@@ -6615,7 +7104,7 @@ class NonVerifiableTransferTransactionV2 : public NonVerifiableTransaction {
 		return size;
 	}
 
-	NonVerifiableTransferTransactionV2 deserialize(const std::vector<uint8_t>& buffer) {
+	NonVerifiableTransferTransactionV2 deserialize(std::vector<uint8_t> payload) {
 		buffer = memoryview(payload);
 		instance = NonVerifiableTransferTransactionV2();
 		type_ = TransactionType.deserialize(buffer);
@@ -6731,8 +7220,9 @@ class NonVerifiableTransferTransactionV2 : public NonVerifiableTransaction {
 
 
 class TransactionFactory {
-	public:
-	Transaction deserialize(payload: bytes) {
+public:
+	Transaction deserialize(payload: bytes)@classmethod
+	 {
 		parent = Transaction();
 		buffer = bytes(payload);
 		Transaction._deserialize(buffer, parent)  # pylint: disable=protected-access;
@@ -6754,7 +7244,8 @@ class TransactionFactory {
 		return factory_class.deserialize(buffer);
 	}
 
-	Transaction create_by_name(entity_name: str) {
+	Transaction create_by_name(entity_name: str)@classmethod
+	 {
 		mapping = {;
 			'account_key_link_transaction_v1': AccountKeyLinkTransactionV1,;
 			'mosaic_definition_transaction_v1': MosaicDefinitionTransactionV1,;
@@ -6777,8 +7268,9 @@ class TransactionFactory {
 
 
 class NonVerifiableTransactionFactory {
-	public:
-	NonVerifiableTransaction deserialize(payload: bytes) {
+public:
+	NonVerifiableTransaction deserialize(payload: bytes)@classmethod
+	 {
 		parent = NonVerifiableTransaction();
 		buffer = bytes(payload);
 		NonVerifiableTransaction._deserialize(buffer, parent)  # pylint: disable=protected-access;
@@ -6800,7 +7292,8 @@ class NonVerifiableTransactionFactory {
 		return factory_class.deserialize(buffer);
 	}
 
-	NonVerifiableTransaction create_by_name(entity_name: str) {
+	NonVerifiableTransaction create_by_name(entity_name: str)@classmethod
+	 {
 		mapping = {;
 			'non_verifiable_account_key_link_transaction_v1': NonVerifiableAccountKeyLinkTransactionV1,;
 			'non_verifiable_mosaic_definition_transaction_v1': NonVerifiableMosaicDefinitionTransactionV1,;

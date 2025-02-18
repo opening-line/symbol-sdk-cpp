@@ -3,12 +3,12 @@ from abc import ABC, abstractmethod
 
 class MethodDescriptor:
 	def __init__(self, method_name=None, arguments=None, body='pass', result='void', is_virtual=False, annotations=None):
-		self.method_name = method_name
-		self.arguments = arguments or []
-		self.body = body
-		self.result = result
-		self.is_virtual = is_virtual
-		self.annotations = annotations or []
+		self.method_name = method_name # 関数名
+		self.arguments = arguments or [] # 引数
+		self.body = body # 関数の中身
+		self.result = result # 戻りの型
+		self.is_virtual = is_virtual # 仮想関数かどうか
+		self.annotations = annotations or [] # アノテーション
 
 
 class AbstractTypeFormatter(ABC):
@@ -72,5 +72,9 @@ class AbstractTypeFormatter(ABC):
 		return []
 	
 	def get_is_virtual(self):
+		# pylint: disable=no-self-use
+		return ''
+	
+	def get_interface(self):
 		# pylint: disable=no-self-use
 		return ''

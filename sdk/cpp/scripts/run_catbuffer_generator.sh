@@ -12,7 +12,7 @@ function generate_code() {
 	PYTHONPATH="${git_root}/catbuffer/parser" python3 -m catparser \
 		--schema "${git_root}/catbuffer/schemas/$1/all_generated.cats"  \
 		--include "${git_root}/catbuffer/schemas/$1" \
-		--output "${git_root}/sdk/cpp/src/$2" \
+		--output "${git_root}/sdk/cpp/lib/$2" \
 		--quiet \
 		--generator generator.Generator
 }
@@ -32,8 +32,8 @@ elif [[ "$1" = "dryrun" ]]; then
 	for name in "nem" "symbol";
 	do
 		generate_code "${name}" "${name}2"
-		diff --strip-trailing-cr "./src/${name}/models.dart" "./src/${name}2/models.dart"
-		rm -rf "./src/${name}2/models.dart"
+		diff --strip-trailing-cr "./src/${name}/models.cpp" "./src/${name}2/models.cpp"
+		rm -rf "./src/${name}2/models.cpp"
 	done
 else
 	echo "unknown options"
